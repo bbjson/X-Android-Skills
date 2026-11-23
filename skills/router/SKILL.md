@@ -36,16 +36,29 @@ that owns it. Loading two domain skills for one change is usually a sign the tas
 
 | Request shape | Load | Not |
 |---|---|---|
-| crash / ANR / wrong value / build error | `bug-fix` | `refactor` |
+| crash / ANR / wrong value / build error | `bug-fix` | `refactor` (roadmap) |
 | "where does this class go?" / layer violation | `layering` | `modularization` |
-| state ownership, effects, rotation loss | `compose-state-effects` | `recomposition` |
+| state ownership, effects, rotation loss | `compose-state-effects` | `state-holders` |
+| screen state design, MVVM vs MVI, SavedStateHandle | `state-holders` | `compose-state-effects` |
+| repository / Room / DataStore / offline / Flow emission | `data-layer` | `layering` |
+| DI wiring, scope, MissingBinding, Hilt↔Koin | `dependency-injection` | `layering` |
+| "should we split into modules?" / build time | `modularization` | `layering` |
 | add screen, args, deep link, back behaviour | `compose-navigation` | `compose-state-effects` |
-| "slow", "janky", "recomposes too much" | `recomposition` | `baseline-profiles` (measure first) |
+| "slow", "janky", "recomposes too much" | `recomposition` | `baseline-profiles` |
 | cold start / first-scroll jank only | `baseline-profiles` | `recomposition` |
-| dependency versions, catalog, BOM | `version-catalog` | `gradle-conventions` |
+| dependency versions, catalog, BOM | `version-catalog` | `agp9-migration` |
+| AGP 8→9, removed variant API, build script breakage | `agp9-migration` | `version-catalog` |
+| JVM test for VM/repo/mapper, flaky or hanging test | `unit-testing` | `compose-ui-testing` |
+| Compose interaction test, tag strategy, restoration | `compose-ui-testing` | `unit-testing` |
 | screenshot / visual regression | `screenshot-testing` | `compose-ui-testing` |
-| token storage, crypto, secret leak | `keystore-and-crypto` | `masvs-audit` |
-| ship to Play, tracks, staged rollout | `release-flow` | `play-metadata` |
+| token storage, crypto, secret leak | `keystore-and-crypto` | `layering` |
+| ship to Play, tracks, staged rollout | `release-flow` | `release-flow` |
+| automate a device flow, reproduce on hardware | `adb-automation` | `compose-ui-testing` |
+| convert XML layout to Compose, View/Compose interop | `xml-to-compose` | `compose-navigation` |
+
+Names marked `(roadmap)` are planned, not present. If a `## Do not use when` section of another
+skill points at a `(roadmap)` neighbour, treat it as "a different domain owns this" and stop — do
+not stretch the current skill to cover it.
 
 ## Rules
 
@@ -60,7 +73,8 @@ that owns it. Loading two domain skills for one change is usually a sign the tas
 5. **Versions never come from a skill.** Any version mentioned in a skill is a catalog key or a
    URL; the project's `gradle/libs.versions.toml` wins.
 6. **Missing coverage is an answer too.** If no skill covers the task, say so and proceed with
-   the platform docs — do not stretch a neighbouring skill to fit.
+   the platform docs — do not stretch a neighbouring skill to fit. A neighbour labelled
+   `(roadmap)` does not exist yet.
 
 ## Checklist
 

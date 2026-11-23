@@ -44,7 +44,7 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 
 写作标准详见 [`docs/skill-style.md`](docs/skill-style.md)。
 
-## 已实现（11）
+## 已实现（20）
 
 | 域 | Skill | 解决什么 |
 |---|---|---|
@@ -59,32 +59,41 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 | quality | `screenshot-testing` | 快照测试必须「变了会红」，含故意打红验证流程 |
 | security | `keystore-and-crypto` | 密钥不出硬件，含 `setInvalidatedByBiometricEnrollment` 等易漏点 |
 | release | `release-flow` | 一份产物走完所有 track，分阶段放量 + 数值化止血条件 |
+| architecture | `modularization` | 模块必须禁止某条依赖，否则只是多了个 build 文件 |
+| architecture | `data-layer` | 单一真相源在本地，网络结果写进去而不是返回给 UI |
+| architecture | `state-holders` | 一个不可变状态类型 + 单一归约入口，事件不进状态 |
+| architecture | `dependency-injection` | 按生命周期定作用域，短命对象不进长命对象 |
+| quality | `unit-testing` | 断言可观察结果而非交互，fake 优先于 mock |
+| quality | `compose-ui-testing` | 按用户可感知的语义查找节点，tag 是最后手段 |
+| build | `agp9-migration` | 逐级爬升，删掉的 API 必须**替换**而不是压制警告 |
+| device | `adb-automation` | 观察→决策→执行循环 + 超时，永不 sleep |
+| migration | `xml-to-compose` | 迁移单位是**一个屏幕**，两个方向互操作但有主有次 |
 
-## Roadmap（37）
+## Roadmap（49）
 
 已规划、尚未落地。每个都已在 `docs/provenance.md` 中标注来源与取舍。
 
 **00 workflow** `requirements-grill` · `feature-to-spec` · `implementation-plan` · `refactor` · `code-review` · `deliver-pr`
 
-**10 architecture** `modularization` · `dependency-injection` · `state-holders` · `data-layer` · `feature-scaffold`
+**10 architecture** `feature-scaffold`
 
 **20 compose** `compose-core` · `compose-component-api` · `compose-animation` · `compose-accessibility` · `design-system` · `rtl-localization`
 
 **30 performance** `modifier-and-layout` · `lazy-layouts` · `startup-and-perfetto` · `r8-for-compose`
 
-**40 build** `gradle-conventions` · `agp9-migration` · `kotlin-toolchain` · `ksp-processing` · `build-performance` · `ci-pipeline`
+**40 build** `gradle-conventions` · `kotlin-toolchain` · `ksp-processing` · `build-performance` · `ci-pipeline`
 
-**50 quality** `unit-testing` · `compose-ui-testing` · `e2e-device-testing` · `static-analysis` · `benchmark-testing`
+**50 quality** `e2e-device-testing` · `static-analysis` · `benchmark-testing`
 
 **60 security** `component-exposure` · `network-dto-safety` · `masvs-audit`
 
 **70 release** `signing-and-play-signing` · `play-metadata` · `data-safety-compliance` · `vitals-and-reports`
 
-**80 device** `adb-automation` · `logcat-root-cause`（现并入 `bug-fix`）· `emulator-management`
+**80 device** `emulator-management`
 
 **90 platform** `kmp` · `wear-os` · `tv-and-focus` · `camera` · `media3` · `notifications-fcm` · `deep-links`
 
-**95 migration** `xml-to-compose` · `rxjava-to-coroutines` · `java-to-kotlin` · `nav2-to-nav3` · `hilt-to-koin` · `cocoapods-to-spm`
+**95 migration** `rxjava-to-coroutines` · `java-to-kotlin` · `nav2-to-nav3` · `hilt-to-koin` · `cocoapods-to-spm`
 
 **99 specialized** `reverse-engineering` · `kotlin-footguns` · `kernel-lkm` · `mainline-port`
 
@@ -116,7 +125,7 @@ python3 tools/validate.py          # 结构、frontmatter、硬编码版本、�
 python3 tools/validate.py --quiet  # 只报问题
 ```
 
-当前状态：**11 skills — 0 errors, 0 warnings**。
+当前状态：**20 skills — 0 errors, 0 warnings**。
 
 ## 仓库结构
 
@@ -147,7 +156,7 @@ Apache-2.0。上游仓库多为 Apache-2.0；4 个无 License 的仓库未被逐
 
 ## 英文摘要
 
-Eleven consolidated Android agent skills distilled from 33 public repositories and 1060
+Twenty consolidated Android agent skills distilled from 33 public repositories and 1060
 `SKILL.md` files. The differentiator is a single enforced constraint — **no skill may pin a
 dependency version** — plus a fixed rule/checklist/verify skeleton that makes every skill
 reviewable against a diff. See `docs/provenance.md` for what was taken from where and
