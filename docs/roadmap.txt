@@ -5,7 +5,6 @@ app-hardening
 app-widgets
 background-work
 billing-and-subscriptions
-build-variants
 crash-reporting
 image-loading
 ipc-and-multiprocess
@@ -13,4 +12,3 @@ ndk-jni
 permissions-and-pickers
 remote-config
 targetsdk-bump
-view-ui-testing
