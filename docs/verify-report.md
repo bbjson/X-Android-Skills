@@ -158,8 +158,10 @@ adb shell cmd notification get_notification_channels
 > Unknown command: get_notification_channels
 ```
 
-Verified working: `adb shell dumpsys notification --noredact | grep -A6 <pkg>` (exit 0), or
-`adb shell cmd notification list` (exit 0).
+Verified working: `adb shell dumpsys notification --noredact` (exit 0, prints the manager state) and
+`adb shell cmd notification list` (exit 0). The `grep -A6 <pkg>` still exits 1 when the app has no
+live notification — which is the case in the fixture — so read the command as "dump, then filter",
+not as a command that must exit 0.
 
 ### 7. AGP 9 removes the Kotlin Android plugin (`agp9-migration`)
 
