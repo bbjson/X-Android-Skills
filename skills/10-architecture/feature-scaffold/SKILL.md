@@ -104,8 +104,8 @@ The deliverable is a compiling feature with one visible screen, one real state a
 ```bash
 ./gradlew :feature:x:assembleDebug
 ./gradlew :feature:x:testDebugUnitTest
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-adb shell am start -W -n <pkg>/.MainActivity   # navigate to the new destination
+adb -s <serial> install -r app/build/outputs/apk/debug/app-debug.apk
+adb -s <serial> shell am start -W -n <pkg>/.MainActivity   # navigate to the new destination
 ```
 
 Expected: the feature compiles independently, its test task runs, and the screen is reachable through

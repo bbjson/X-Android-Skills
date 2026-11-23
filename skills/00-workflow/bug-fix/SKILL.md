@@ -100,7 +100,7 @@ you formed**. A patch that "seems to help" is a regression you have not noticed 
 ```bash
 ./gradlew :app:assembleDebug
 ./gradlew :app:testDebugUnitTest --tests '*<AffectedClass>*'
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb -s <serial> install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 Expected: the original repro no longer reproduces, and the new test fails when the fix is

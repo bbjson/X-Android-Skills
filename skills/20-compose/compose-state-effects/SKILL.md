@@ -117,7 +117,7 @@ same owner.** If you cannot name both, the design is not finished.
 Observable checks after the change:
 
 - Rotate the device: one-shot events fire exactly once, state survives.
-- Background the app (`adb shell input keyevent KEYCODE_HOME`) and watch Logcat: no collection
+- Background the app (`adb -s <serial> shell input keyevent KEYCODE_HOME`) and watch Logcat: no collection
   or network call from the screen continues.
 - Enable Layout Inspector → recomposition counts: scrolling a list must not increment the
   screen-level Composable's count.

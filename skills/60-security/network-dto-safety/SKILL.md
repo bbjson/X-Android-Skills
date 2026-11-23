@@ -115,7 +115,7 @@ be absent, null, a different type, or a string where you expect a number.
 ```bash
 ./gradlew :core:network:test          # hostile fixtures must all decode or fail predictably
 ./gradlew :app:assembleRelease
-adb install -r app/build/outputs/apk/release/app-release.apk   # exercise one API path
+adb -s <serial> install -r app/build/outputs/apk/release/app-release.apk   # exercise one API path
 ```
 
 Expected: every hostile fixture either decodes to a sensible default or produces a modelled

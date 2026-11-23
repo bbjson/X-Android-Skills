@@ -101,10 +101,10 @@ nobody else; the platform will not fix a wrong channel.
 ## Verify
 
 ```bash
-adb shell dumpsys notification --noredact | grep -A6 "<pkg>"
-adb shell dumpsys notification --noredact | grep -A6 "<pkg>"   # channel ids + importance
-adb shell pm revoke <pkg> android.permission.POST_NOTIFICATIONS   # denial path
-adb shell am force-stop <pkg>   # then send a test push
+adb -s <serial> shell dumpsys notification --noredact | grep -A6 "<pkg>"
+adb -s <serial> shell dumpsys notification --noredact | grep -A6 "<pkg>"   # channel ids + importance
+adb -s <serial> shell pm revoke <pkg> android.permission.POST_NOTIFICATIONS   # denial path
+adb -s <serial> shell am force-stop <pkg>   # then send a test push
 ```
 
 Expected: each channel appears with its intended importance, background/killed delivery works with the

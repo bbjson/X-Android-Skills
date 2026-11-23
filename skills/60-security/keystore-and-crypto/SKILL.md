@@ -111,8 +111,8 @@ raw key bytes has already lost the property the Keystore provides.
 ## Verify
 
 ```bash
-adb shell run-as <pkg> ls shared_prefs            # secrets must not appear in plaintext
-adb shell run-as <pkg> grep -rl "eyJ" . 2>/dev/null   # JWT-like strings in app storage
+adb -s <serial> shell run-as <pkg> ls shared_prefs            # secrets must not appear in plaintext
+adb -s <serial> shell run-as <pkg> grep -rl "eyJ" . 2>/dev/null   # JWT-like strings in app storage
 ./gradlew :app:lintDebug                              # HardcodedText/Keystore lint ids
 ```
 

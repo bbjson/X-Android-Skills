@@ -118,7 +118,7 @@ screen so every regression is attributable to a single change.
 ./gradlew :app:assembleDebug
 ./gradlew :feature:x:verifyRoborazziDebug        # if screenshot tests are in place
 ./gradlew :app:lintDebug                          # UnusedResources after deletion
-adb shell am start -n <pkg>/<Activity>            # manual parity check
+adb -s <serial> shell am start -n <pkg>/<Activity>            # manual parity check
 ```
 
 Expected: the migrated screen renders identically (screenshot diff or side-by-side), Back

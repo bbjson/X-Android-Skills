@@ -109,9 +109,9 @@ that".
 ```bash
 make -C <kernel-tree> M=$PWD ARCH=arm64 CROSS_COMPILE=aarch64-linux-android- modules
 modinfo ./hello.ko | grep vermagic
-adb push hello.ko /data/local/tmp/ && adb shell "su -c 'insmod /data/local/tmp/hello.ko'"
-adb shell "su -c 'dmesg | tail -20'"
-adb shell "su -c 'rmmod hello'"
+adb -s <serial> push hello.ko /data/local/tmp/ && adb -s <serial> shell "su -c 'insmod /data/local/tmp/hello.ko'"
+adb -s <serial> shell "su -c 'dmesg | tail -20'"
+adb -s <serial> shell "su -c 'rmmod hello'"
 ```
 
 Expected: `modinfo` vermagic equals `uname -r`, `insmod` succeeds, `dmesg` shows the module's init message,

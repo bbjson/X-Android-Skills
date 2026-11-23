@@ -3,7 +3,7 @@
 Every `## Verify` command in this repository was executed against a real Android project on
 real hardware. This document records what was run, what broke, and what could not be checked.
 
-Date: 2026-11-23 · Host: Ubuntu 22.04 · Skills: 69 · Commands extracted: 197
+Date: 2026-11-23 · Host: Ubuntu 22.04 · Skills: 69 · Commands extracted: 198
 
 ## Environment
 
@@ -66,15 +66,27 @@ plugins, a Compose app, a pure-Kotlin module, and a library module.
 
 ## Results
 
-| Class | Count |
+| Skill state | Skills | Meaning |
+|---|---|---|
+| **VERIFIED** | **54** | every non-skipped Verify command executed and exited 0 |
+| INCONCLUSIVE | 1 | `component-exposure`: all three commands are *expected-failure* assertions (a denied start, a malformed deep link) that a script cannot grade |
+| SKIPPED-ONLY | 6 | `screenshot-testing`, `benchmark-testing`, `kmp`, `cocoapods-to-spm`, `kernel-lkm`, `vitals-and-reports` — every command needs a dependency the fixture does not have |
+| No commands | 8 | `code-review`, `deliver-pr`, `feature-to-spec`, `implementation-plan`, `requirements-grill`, `masvs-audit`, `reverse-engineering`, `router` — prose Verify with an explicit `Expected:` line |
+
+| Command state | Count |
 |---|---|
-| Commands extracted | 197 |
-| Unique Gradle commands executed | 40 |
-| Device commands executed | 26 |
-| Shell commands executed | 41 |
-| Skipped: dependency not in fixture | 5 |
-| Skipped: dangerous/environment-mutating | 10 |
-| **Skill defects found** | **8** |
+| Extracted | 198 |
+| Executed | **150** |
+| Exited non-zero | **0** |
+| Skipped: dependency absent | 26 |
+| Skipped: placeholder (`<kernel-tree>`, `...`) | 8 |
+| Skipped: dangerous / environment-mutating | 14 |
+
+Grading rules used, so the zero is not vacuous: a `grep` returning 1 with no match counts as
+`empty` (many skills assert "must be empty"); `grep`/`ls`/`run-as` against a path absent from
+the fixture counts as `structure`; commands the skill *expects* to fail (`am start` on a
+non-exported component, a malformed deep link) count as `expected-fail`; `INSTALL_FAILED_UPDATE_INCOMPATIBLE`
+and `/proc/device-tree` count as environment.
 
 ## Defects found and fixed
 
@@ -193,6 +205,61 @@ resolver plugin), and a JRE-only installation fails with a capability error rath
 the Kotlin JVM plugin must be declared `apply false` in the root and applied without a version in
 the module.
 
+### 9. A `grep` regex escaped into uselessness (`modularization`)
+
+My own fix for defect 3 wrote `grep -E "project \'?:"` — inside double quotes that is a literal
+backslash-quote, so the pattern never matches. Verified working: `grep -E "project '?:"` (exit 0,
+matches `+--- project ':domain'`).
+
+### 10. `:module:test --tests` is an aggregating task (`unit-testing`, `state-holders`)
+
+```
+./gradlew :core:data:test --tests '*RepositoryTest*'
+> Unknown command-line option '--tests'.
+```
+
+In an Android module `test` aggregates `testDebugUnitTest` + `testReleaseUnitTest`, so it has no
+`--tests` option. Verified working: `:core:data:testDebugUnitTest --tests`. Same correction in
+`state-holders` (`:feature:feed:test` → `:feature:feed:testDebugUnitTest`).
+
+### 11. AGP 9 moved the built-in Kotlin class output (`kotlin-toolchain`)
+
+```
+javap ... app/build/tmp/kotlin-classes/debug/.../MainActivity.class
+# No such file
+```
+
+With Kotlin built into AGP the classes land in
+`app/build/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes/…`. Verified: `javap`
+prints `major version: 61` (Java 17) from the new path.
+
+### 12. `logcat` without `-d` never returns (`camera`)
+
+```
+adb logcat | grep -iE "CameraX|CameraDevice|CaptureSession"    # TIMEOUT after 90s
+```
+
+A dangling `logcat` blocks forever. Fixed to `adb logcat -d | grep … | tail -20`.
+
+### 13. 62 bare `adb` invocations contradict this repo's own rule
+
+```
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+> adb: more than one device/emulator
+```
+
+`adb-automation` rule 1 requires an explicit target, yet 62 Verify commands across 26 skills used
+bare `adb`. With one emulator plus one physical device attached, every one of them fails. All
+device commands in Verify blocks now carry `-s <serial>`; verified on a two-device setup.
+
+### 14. Fixture gaps that looked like skill bugs (no change needed)
+
+Kept separate from the 13 above because the commands are correct:
+`apksigner verify` on an unsigned APK (fixed by adding a real upload keystore to the fixture),
+`am start -d "example://…"` with no matching intent filter, `run-as … ls shared_prefs` on an app
+that never writes preferences, `cat /proc/device-tree/model` on x86, and installing a release APK
+over a debug-signed install (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`).
+
 ## Passed, with notes
 
 | Command | Result | Note |
@@ -244,7 +311,8 @@ python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture           # ex
 
 ## What this changed in the repository
 
-- 8 skill defects fixed (above), each with the failing command replaced by a verified one.
+- **14 skill defects fixed** (6 command bugs, 4 rule inaccuracies, 62 bare-`adb` commands made
+  device-explicit, plus the escaped-regex regression introduced while fixing defect 3).
 - `tools/validate.py` now requires every `## Verify` to contain a bash block **or** an
   `Expected:` outcome — a Verify that cannot be checked is now an error.
 - 8 prose Verify sections gained an explicit `Expected:` line.

@@ -118,9 +118,9 @@ call it with any Intent it can construct.
 ## Verify
 
 ```bash
-adb shell dumpsys package <pkg> | grep -E "exported=true" -B2
-adb shell am start -n <pkg>/.InternalActivity        # must fail: not exported
-adb shell am start -a android.intent.action.VIEW -d "yourapp://detail/';--"   # must be rejected
+adb -s <serial> shell dumpsys package <pkg> | grep -E "exported=true" -B2
+adb -s <serial> shell am start -n <pkg>/.InternalActivity        # must fail: not exported
+adb -s <serial> shell am start -a android.intent.action.VIEW -d "yourapp://detail/';--"   # must be rejected
 ```
 
 Expected: only intended components appear as exported; direct starts of internal components fail

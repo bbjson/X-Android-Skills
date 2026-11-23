@@ -111,8 +111,8 @@ routes typed, back stack owned, and ViewModel scopes aligned with it.
 
 ```bash
 ./gradlew :app:assembleDebug
-adb shell am start -a android.intent.action.VIEW -d "https://example.com/detail/42"
-adb shell input keyevent KEYCODE_BACK
+adb -s <serial> shell am start -a android.intent.action.VIEW -d "https://example.com/detail/42"
+adb -s <serial> shell input keyevent KEYCODE_BACK
 ```
 
 Expected: deep link lands on the detail screen with `id = 42`, Back returns to the tab stack it

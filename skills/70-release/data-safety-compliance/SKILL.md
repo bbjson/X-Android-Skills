@@ -112,7 +112,7 @@ suspension.
 
 ```bash
 grep -oE 'uses-permission[^/]*' app/build/intermediates/merged_manifests/release/AndroidManifest.xml | sort -u
-adb shell dumpsys package <pkg> | grep -A2 "requested permissions"
+adb -s <serial> shell dumpsys package <pkg> | grep -A2 "requested permissions"
 curl -sI "$(grep -o 'https://[^"]*privacy[^"]*' README.md | head -1)" | head -1
 ```
 

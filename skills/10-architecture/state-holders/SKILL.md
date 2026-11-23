@@ -107,8 +107,8 @@ either valid or explicitly invalid — never a combination that cannot be render
 ## Verify
 
 ```bash
-./gradlew :feature:feed:test --tests '*FeedViewModelTest*'
-adb shell am kill <pkg>   # then relaunch: arguments and state must restore
+./gradlew :feature:feed:testDebugUnitTest --tests '*FeedViewModelTest*'
+adb -s <serial> shell am kill <pkg>   # then relaunch: arguments and state must restore
 ```
 
 Expected: tests assert the sequence `Loading → Content/Error` (see `unit-testing` Turbine rules),

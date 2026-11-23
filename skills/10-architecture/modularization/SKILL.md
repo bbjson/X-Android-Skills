@@ -105,7 +105,7 @@ when you can state which dependency it makes impossible.
 
 ```bash
 ./gradlew projects
-./gradlew :app:dependencies --configuration debugRuntimeClasspath | grep -E "project \'?:" 
+./gradlew :app:dependencies --configuration debugRuntimeClasspath | grep -E "project '?:" 
 ./gradlew :feature:feed:api:compileDebugKotlin      # must succeed alone
 grep -rn "implementation project(':feature:profile')" feature/feed/   # must be empty
 ```

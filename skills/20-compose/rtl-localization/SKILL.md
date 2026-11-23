@@ -115,7 +115,7 @@ translated string in a left-to-right layout is still broken for an RTL user.
 ## Verify
 
 ```bash
-adb shell "setprop persist.sys.locale ar-EG; stop; start"    # device-level RTL (reboot-ish)
+adb -s <serial> shell "setprop persist.sys.locale ar-EG; stop; start"    # device-level RTL (reboot-ish)
 ./gradlew :app:assembleDebug
 # plus a Rtl preview: CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl)
 grep -rn "layout_marginLeft\|paddingLeft" --include=*.xml --include=*.kt .   # must be empty

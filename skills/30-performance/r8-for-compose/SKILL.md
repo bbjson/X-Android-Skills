@@ -113,9 +113,9 @@ JS bridges — is at risk.
 ```bash
 ./gradlew :app:assembleRelease
 ls -l app/build/outputs/mapping/release/mapping.txt
-adb install -r app/build/outputs/apk/release/app-release.apk
-adb logcat -c && adb shell am start -n <pkg>/.MainActivity
-adb shell dumpsys gfxinfo <pkg> framestats | head -20
+adb -s <serial> install -r app/build/outputs/apk/release/app-release.apk
+adb -s <serial> logcat -c && adb -s <serial> shell am start -n <pkg>/.MainActivity
+adb -s <serial> shell dumpsys gfxinfo <pkg> framestats | head -20
 # retrace one known stack trace
 retrace app/build/outputs/mapping/release/mapping.txt crash.txt
 ```

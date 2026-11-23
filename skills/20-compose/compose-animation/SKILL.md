@@ -102,10 +102,10 @@ because an animation ran, the animation is hiding a decision.
 ## Verify
 
 ```bash
-adb shell settings put global animator_duration_scale 0
-adb shell settings put global transition_animation_scale 0
+adb -s <serial> shell settings put global animator_duration_scale 0
+adb -s <serial> shell settings put global transition_animation_scale 0
 ./gradlew :feature:x:testDebugUnitTest
-adb shell settings put global animator_duration_scale 1
+adb -s <serial> shell settings put global animator_duration_scale 1
 ```
 
 Expected: with scales at 0 every state renders correctly and instantly; tests pass with animations

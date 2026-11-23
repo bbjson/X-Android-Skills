@@ -100,7 +100,7 @@ private method, it is testing the implementation and will be deleted or ignored 
 ## Verify
 
 ```bash
-./gradlew :core:data:test --tests '*RepositoryTest*'
+./gradlew :core:data:testDebugUnitTest --tests '*RepositoryTest*'
 ./gradlew test --continue          # all JVM tests, no early abort
 ```
 

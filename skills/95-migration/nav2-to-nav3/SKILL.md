@@ -110,8 +110,8 @@ The conceptual change: navigation stops being a **controller you call** and beco
 ```bash
 ./gradlew :app:assembleDebug
 grep -rn "NavHost\|navController" --include=*.kt app/src/main   # empty for converted flows
-adb shell am force-stop <pkg> && adb shell am start -n <pkg>/.MainActivity
-adb shell input keyevent KEYCODE_BACK
+adb -s <serial> shell am force-stop <pkg> && adb -s <serial> shell am start -n <pkg>/.MainActivity
+adb -s <serial> shell input keyevent KEYCODE_BACK
 ```
 
 Expected: navigating into a detail screen and pressing Back returns to the same list position with the

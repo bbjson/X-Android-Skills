@@ -98,11 +98,11 @@ not exist, no matter how visible it is.
 ## Verify
 
 ```bash
-adb shell input keyevent KEYCODE_DPAD_DOWN
-adb shell input keyevent KEYCODE_DPAD_RIGHT
-adb shell input keyevent KEYCODE_ENTER
-adb shell input keyevent KEYCODE_BACK
-adb shell dumpsys window | grep -m1 mCurrentFocus    # focus target changes as expected
+adb -s <serial> shell input keyevent KEYCODE_DPAD_DOWN
+adb -s <serial> shell input keyevent KEYCODE_DPAD_RIGHT
+adb -s <serial> shell input keyevent KEYCODE_ENTER
+adb -s <serial> shell input keyevent KEYCODE_BACK
+adb -s <serial> shell dumpsys window | grep -m1 mCurrentFocus    # focus target changes as expected
 ```
 
 Expected: D-pad traversal visits every control in the intended order, Enter activates it, Back returns

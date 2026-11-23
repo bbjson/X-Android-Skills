@@ -103,14 +103,14 @@ the manifest filter, the verification artefact, and the route parser.
 
 ```bash
 # App Link
-adb shell am start -a android.intent.action.VIEW -d "https://example.com/detail/42"
+adb -s <serial> shell am start -a android.intent.action.VIEW -d "https://example.com/detail/42"
 # custom scheme
-adb shell am start -a android.intent.action.VIEW -d "example://detail/42"
+adb -s <serial> shell am start -a android.intent.action.VIEW -d "example://detail/42"
 # verification state
-adb shell pm get-app-links <pkg>          # verified / unverified domains
+adb -s <serial> shell pm get-app-links <pkg>          # verified / unverified domains
 # malformed link must not crash
-adb shell am start -a android.intent.action.VIEW -d "https://example.com/detail/%00"
-adb shell dumpsys window | grep -m1 mCurrentFocus
+adb -s <serial> shell am start -a android.intent.action.VIEW -d "https://example.com/detail/%00"
+adb -s <serial> shell dumpsys window | grep -m1 mCurrentFocus
 ```
 
 Expected: the app (not the browser) receives the link, lands on the intended screen with a sane back

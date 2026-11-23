@@ -122,7 +122,8 @@ Three separate version axes are usually conflated: **JDK** (runs the compiler), 
 ```bash
 ./gradlew buildEnvironment | grep -E "kotlin-(gradle-plugin|stdlib)"
 ./gradlew assembleDebug test
-javap -verbose app/build/tmp/kotlin-classes/debug/<pkg>/MainActivity.class | grep "major version"
+javap -verbose app/build/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes/<pkg>/MainActivity.class \
+  | grep "major version"
 ```
 
 Expected: one Kotlin plugin version, one stdlib version, identical `major version` across modules, and

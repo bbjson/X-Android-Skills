@@ -124,9 +124,9 @@ T0 process fork → T1 Application.onCreate → T2 first Activity.onCreate → T
 ## Verify
 
 ```bash
-adb shell am force-stop <pkg>
-for i in 1 2 3 4 5; do adb shell am start -W -n <pkg>/.MainActivity | grep TotalTime; done
-adb shell app_process ... && adb shell dumpsys meminfo <pkg> | head
+adb -s <serial> shell am force-stop <pkg>
+for i in 1 2 3 4 5; do adb -s <serial> shell am start -W -n <pkg>/.MainActivity | grep TotalTime; done
+adb -s <serial> shell app_process ... && adb -s <serial> shell dumpsys meminfo <pkg> | head
 ```
 
 Expected: same device, same build type, TotalTime P50 improved versus the recorded baseline, with the

@@ -105,9 +105,9 @@ not released, or a provider rebuilt at the wrong time.
 ## Verify
 
 ```bash
-adb shell pm grant <pkg> android.permission.CAMERA
-adb logcat -c && adb logcat | grep -iE "CameraX|CameraDevice|CaptureSession"
-adb shell dumpsys media.camera | head -20    # after leaving the screen: no active client
+adb -s <serial> shell pm grant <pkg> android.permission.CAMERA
+adb -s <serial> logcat -c && adb -s <serial> logcat -d | grep -iE "CameraX|CameraDevice|CaptureSession" | tail -20
+adb -s <serial> shell dumpsys media.camera | head -20    # after leaving the screen: no active client
 ```
 
 Expected: preview visible, captured file orientation matches the device, and after leaving the screen

@@ -114,8 +114,8 @@ tree.
 ## Verify
 
 ```bash
-adb shell settings put secure enabled_accessibility_services com.google.android.marvin.talkback/...
-adb shell uiautomator dump /sdcard/ui.xml && adb pull /sdcard/ui.xml
+adb -s <serial> shell settings put secure enabled_accessibility_services com.google.android.marvin.talkback/...
+adb -s <serial> shell uiautomator dump /sdcard/ui.xml && adb -s <serial> pull /sdcard/ui.xml
 grep -c "content-desc=\"\"" /tmp/ui.xml     # unlabelled nodes
 ./gradlew :app:lintDebug                    # ContentDescription, TouchTargetSize
 ```

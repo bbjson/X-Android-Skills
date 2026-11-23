@@ -111,7 +111,7 @@ identity (wrong keys) and work per item (formatting, allocation, unbounded measu
 
 ```bash
 ./gradlew :app:assembleDebug
-adb shell dumpsys gfxinfo <pkg> framestats | head -40    # janky frames while scrolling
+adb -s <serial> shell dumpsys gfxinfo <pkg> framestats | head -40    # janky frames while scrolling
 # Perfetto: record scroll, check for frames > 16.6ms and for repeated measure passes
 ```
 

@@ -125,7 +125,7 @@ python3 tools/audit_duplicates.py          # 规则重叠最高的 skill 对（�
 69 skills — 0 errors, 0 warnings
 69 installed, 0 roadmap — 0 unknown references
 75 routing cases, 68/69 skills covered — 0 failures
-## Verify 已实跑：197 条命令 / 8 条缺陷已修（docs/verify-report.md）
+## Verify 已实跑：198 条 / 150 条执行 / 0 失败 / 14 缺陷已修（docs/verify-report.md）
 ```
 
 `router` 是 meta，不需要 eval 用例；其余 68 个 skill 每个至少被一条 routing 断言覆盖。
@@ -162,22 +162,31 @@ AGENTS.md                             # 给 agent 的项目约定
 
 ## 验证状态
 
-**已对 69 个 skill 的 `## Verify` 逐条实跑**（2026-11-23，真实项目 + 真机/模拟器）：
+**198 条 `## Verify` 命令逐条实跑**（2026-11-23，真实项目 + 模拟器 + 真机）：
 
-| 项 | 结果 |
+| skill 状态 | 数量 | 含义 |
+|---|---|---|
+| **VERIFIED** | **54** | 非跳过命令全部执行、全部 exit 0 |
+| INCONCLUSIVE | 1 | `component-exposure`：3 条命令都是"期望失败"型断言，脚本无法判分 |
+| SKIPPED-ONLY | 6 | `screenshot-testing` `benchmark-testing` `kmp` `cocoapods-to-spm` `kernel-lkm` `vitals-and-reports` —— 依赖不在 fixture |
+| 无命令 | 8 | 纯文字判据（workflow/meta），已有 `Expected:` 行 |
+
+| 命令状态 | 数量 |
 |---|---|
-| 提取命令 | 197 条（61 个 skill 含可执行命令） |
-| 去重后实际执行 | Gradle 40 条 · 设备 26 条 · shell 41 条 |
-| 发现 skill 缺陷 | **8 条**（已全部修复） |
-| 无法验证 | 见 `docs/verify-report.md` 的清单（Roborazzi / Macrobenchmark / Hilt·Koin / Room·KSP / KMP / Play Console / 内核） |
+| 提取 | 198 |
+| 执行 | **150** |
+| 非零退出 | **0** |
+| 跳过（依赖缺失 / 占位符 / 危险操作） | 26 / 8 / 14 |
+
+**发现并修复 14 个缺陷**（详见 `docs/verify-report.md`）：6 条命令写错、4 条规则失真、
+62 处裸 `adb`（与 `adb-automation` 自己的规则冲突，双设备环境必挂）。
 
 环境：AGP 9.1.1 · Gradle 9.7 · Kotlin 2.4.21（AGP 内置）· Compose BOM 2026.02.00 · compileSdk 36 ·
-JDK 17 · Pixel_9_API_36 模拟器。
+JDK 17 · Pixel_9_API_36 + 一台真机。
 
-修掉的 8 条里有 6 条是命令本身错的（`--tests` 用在聚合 task、Gradle 9 的 `project ':x'` 引号、
-失效的 `androidx.compose.compiler.reports`、非法的 `-Pandroid.injected.build.api=...`、
-不存在的 `cmd notification get_notification_channels`），2 条是规则失真（AGP 9 移除
-`kotlin-android` 插件；`jvmToolchain` 不会自动下载 JDK，且 JRE 会报 `[JAVA_COMPILER]`）。
+典型的 6 条命令错误：`--tests` 用在聚合 task（`:x:test`）、Gradle 9 的 `project ':x'` 引号、
+`androidx.compose.compiler.reports` 属性失效、`-Pandroid.injected.build.api=...` 无法解析、
+`cmd notification get_notification_channels` 不存在、AGP 9 改了 `javap` 的类输出路径。
 
 复跑：
 

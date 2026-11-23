@@ -102,9 +102,9 @@ the owner right prevents both "audio after exit" and "stops on background".
 ## Verify
 
 ```bash
-adb shell dumpsys media_session | grep -A5 "package=<pkg>"
-adb shell dumpsys audio | head -40      # focus ownership
-adb shell am force-stop <pkg> && adb shell dumpsys media.audio_flinger | head
+adb -s <serial> shell dumpsys media_session | grep -A5 "package=<pkg>"
+adb -s <serial> shell dumpsys audio | head -40      # focus ownership
+adb -s <serial> shell am force-stop <pkg> && adb -s <serial> shell dumpsys media.audio_flinger | head
 ```
 
 Expected: the session is owned by the service, audio focus is held while playing, playback survives
