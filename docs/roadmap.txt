@@ -1,9 +1,3 @@
 # Planned skill names (one slug per line). Referenced by tools/check_refs.py.
 # Empty: all planned skills are implemented. A name here means "referenced but not written yet".
-app-widgets
-background-work
-image-loading
-ipc-and-multiprocess
-ndk-jni
-permissions-and-pickers
 targetsdk-bump
