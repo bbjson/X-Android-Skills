@@ -44,48 +44,44 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 
 写作标准详见 [`docs/skill-style.md`](docs/skill-style.md)。
 
-## 已实现（20）
+## 已实现（37）
 
-| 域 | Skill | 解决什么 |
+入口是 `router`：任何模糊请求先经它路由，避免"从症状开工"。
+
+| 域 | Skills | 该域的核心主张 |
 |---|---|---|
-| meta | `router` | 从症状路由到正确的 skill，拒绝在任务不清时开工 |
-| workflow | `bug-fix` | 证据优先的排障顺序（复现 → 首个 `Caused by` → 判别实验 → 最小修复） |
-| architecture | `layering` | 谁拥有这段代码、依赖方向、边界模型与映射位置 |
-| compose | `compose-state-effects` | 每个状态的最低责任所有者 + 每个副作用的正确 effect |
-| compose | `compose-navigation` | Nav3 状态驱动 vs Nav2 类型安全路由，参数/深链/ViewModel 作用域 |
-| performance | `recomposition` | 只分四类原因，每类一个正确解（含 strong skipping 的过时说法纠正） |
-| performance | `baseline-profiles` | 生成 / 测量 / CI 门禁，并验证 profile 真的进了 APK |
-| build | `version-catalog` | 版本只有一个真相源，convention plugin 从 catalog 读 |
-| quality | `screenshot-testing` | 快照测试必须「变了会红」，含故意打红验证流程 |
-| security | `keystore-and-crypto` | 密钥不出硬件，含 `setInvalidatedByBiometricEnrollment` 等易漏点 |
-| release | `release-flow` | 一份产物走完所有 track，分阶段放量 + 数值化止血条件 |
-| architecture | `modularization` | 模块必须禁止某条依赖，否则只是多了个 build 文件 |
-| architecture | `data-layer` | 单一真相源在本地，网络结果写进去而不是返回给 UI |
-| architecture | `state-holders` | 一个不可变状态类型 + 单一归约入口，事件不进状态 |
-| architecture | `dependency-injection` | 按生命周期定作用域，短命对象不进长命对象 |
-| quality | `unit-testing` | 断言可观察结果而非交互，fake 优先于 mock |
-| quality | `compose-ui-testing` | 按用户可感知的语义查找节点，tag 是最后手段 |
-| build | `agp9-migration` | 逐级爬升，删掉的 API 必须**替换**而不是压制警告 |
-| device | `adb-automation` | 观察→决策→执行循环 + 超时，永不 sleep |
-| migration | `xml-to-compose` | 迁移单位是**一个屏幕**，两个方向互操作但有主有次 |
+| meta | `router` | 从症状路由到 artefact；两个 skill 同时适用 = 该拆任务 |
+| 00 workflow | `requirements-grill` `feature-to-spec` `implementation-plan` `code-review` | 需求未定不写码；状态集必须封闭；每个任务结束于绿色 |
+| 10 architecture | `layering` `modularization` `data-layer` `state-holders` `dependency-injection` `feature-scaffold` | 模块必须能说出它禁止了什么；单一真相源在本地 |
+| 20 compose | `compose-core` `compose-component-api` `compose-state-effects` `compose-navigation` `compose-animation` `compose-accessibility` `design-system` `rtl-localization` | 一个状态一个所有者；slot 代替布尔；token 代替字面量 |
+| 30 performance | `recomposition` `modifier-and-layout` `lazy-layouts` `startup-and-perfetto` `baseline-profiles` `r8-for-compose` | 没有 before/after 数字就不算修复 |
+| 40 build | `version-catalog` `agp9-migration` | 版本只有一个真相源；删掉的 API 必须替换而非压制 |
+| 50 quality | `unit-testing` `compose-ui-testing` `screenshot-testing` | 断言可观察结果；测试必须见过红 |
+| 60 security | `keystore-and-crypto` `component-exposure` `network-dto-safety` | 密钥不出硬件；导出的组件是没有版本的公开 API |
+| 70 release | `release-flow` | 一份产物走完所有 track；止血条件是数字 |
+| 80 device | `adb-automation` | 观察→决策→执行循环，永不 sleep |
+| 95 migration | `xml-to-compose` | 迁移单位是一个屏幕，两个方向互操作但有主有次 |
 
-## Roadmap（49）
+几个只有对照多个上游才写得出的规则：
 
-已规划、尚未落地。每个都已在 `docs/provenance.md` 中标注来源与取舍。
+- **`StrongSkippingMode` 已默认开启，不要显式加** —— 上游旧材料仍在教这个
+- `@Stable` 加在含 `var` 的类上是「谎言，会产生陈旧 UI」
+- `SharedFlow(replay=1)` 做一次性事件会在旋转后重放，`StateFlow` 会丢事件 → 用 `Channel`
+- `Modifier.padding(16.dp).clickable {}` 与反过来的点击区域不同，这是设计决策不是细节
+- Play 放量前必须有**数值**止血条件，且「回滚 = 撤销放量 + 重推旧版本号」
+- `coerceInputValues` 会让 DTO 类型漂移静默变默认值，这是掩盖而非修复
 
-**00 workflow** `requirements-grill` · `feature-to-spec` · `implementation-plan` · `refactor` · `code-review` · `deliver-pr`
+## Roadmap（32）
 
-**10 architecture** `feature-scaffold`
+已规划、尚未落地。来源与取舍见 `docs/provenance.md`，名称清单在 `docs/roadmap.txt`。
 
-**20 compose** `compose-core` · `compose-component-api` · `compose-animation` · `compose-accessibility` · `design-system` · `rtl-localization`
-
-**30 performance** `modifier-and-layout` · `lazy-layouts` · `startup-and-perfetto` · `r8-for-compose`
+**00 workflow** `refactor` · `deliver-pr`
 
 **40 build** `gradle-conventions` · `kotlin-toolchain` · `ksp-processing` · `build-performance` · `ci-pipeline`
 
 **50 quality** `e2e-device-testing` · `static-analysis` · `benchmark-testing`
 
-**60 security** `component-exposure` · `network-dto-safety` · `masvs-audit`
+**60 security** `masvs-audit`
 
 **70 release** `signing-and-play-signing` · `play-metadata` · `data-safety-compliance` · `vitals-and-reports`
 
@@ -122,10 +118,10 @@ pi / Claude Code / Codex 会在启动时扫描该目录，把每个 skill 的 `n
 
 ```bash
 python3 tools/validate.py          # 结构、frontmatter、硬编码版本、长度预算
-python3 tools/validate.py --quiet  # 只报问题
+python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
 ```
 
-当前状态：**20 skills — 0 errors, 0 warnings**。
+当前状态：**37 skills — 0 errors, 0 warnings, 0 unknown references**。
 
 ## 仓库结构
 
@@ -133,10 +129,12 @@ python3 tools/validate.py --quiet  # 只报问题
 skills/<NN-domain>/<slug>/SKILL.md    # slug 必须等于 frontmatter name
 skills/router/SKILL.md
 templates/SKILL.template.md
-tools/validate.py                     # 校验器
+tools/validate.py                     # 结构 + 版本规则校验
+tools/check_refs.py                   # 悬空 skill 引用检测
 tools/install.sh                      # 安装器
 docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
+docs/roadmap.txt                      # 32 个规划中的 skill 名
 AGENTS.md                             # 给 agent 的项目约定
 ```
 
@@ -156,8 +154,8 @@ Apache-2.0。上游仓库多为 Apache-2.0；4 个无 License 的仓库未被逐
 
 ## 英文摘要
 
-Twenty consolidated Android agent skills distilled from 33 public repositories and 1060
+Thirty-seven consolidated Android agent skills distilled from 33 public repositories and 1060
 `SKILL.md` files. The differentiator is a single enforced constraint — **no skill may pin a
-dependency version** — plus a fixed rule/checklist/verify skeleton that makes every skill
-reviewable against a diff. See `docs/provenance.md` for what was taken from where and
-`docs/skill-style.md` for the authoring standard.
+dependency version** — plus a fixed rule/checklist/verify skeleton that makes every skill reviewable
+against a diff. See `docs/provenance.md` for what was taken from where and `docs/skill-style.md` for
+the authoring standard.

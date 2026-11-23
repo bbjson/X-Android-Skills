@@ -1,12 +1,11 @@
 ---
 name: router
 description: >-
-  Route an Android task to the correct domain skill before doing any work, and refuse to start
-  when the task is under-specified. Use at the start of any Android, Kotlin, Jetpack Compose,
-  Gradle, Play release, or device-automation request when you are unsure which skill applies,
-  when several could apply, or when the request is a symptom ("it's slow", "it crashes") rather
-  than a task. Use when starting any Android/Kotlin/Compose/Gradle/Play/device request whose
-  owning skill is not obvious.
+  Route an Android task to the correct domain skill before doing any work, and refuse to start when
+  the task is under-specified. Use at the start of any Android, Kotlin, Jetpack Compose, Gradle,
+  Play release, or device-automation request when you are unsure which skill applies, when several
+  could apply, or when the request is a symptom ("it's slow", "it crashes") rather than a task.
+  Use when starting any such request and the owning skill is not obvious.
 license: Apache-2.0
 metadata:
   domain: meta
@@ -19,8 +18,8 @@ metadata:
 
 # Router
 
-Do not start work from a symptom. Name the artefact that must change, then load the one skill
-that owns it. Loading two domain skills for one change is usually a sign the task should be split.
+Do not start work from a symptom. Name the artefact that must change, then load the one skill that
+owns it. Loading two domain skills for one change is usually a sign the task should be split.
 
 ## Use when
 
@@ -34,47 +33,89 @@ that owns it. Loading two domain skills for one change is usually a sign the tas
 
 ## Routing table
 
+**Workflow — deciding what to build**
+
 | Request shape | Load | Not |
 |---|---|---|
-| crash / ANR / wrong value / build error | `bug-fix` | `refactor` (roadmap) |
+| vague/single-sentence feature request, unstated assumptions | `requirements-grill` | `feature-to-spec` |
+| requirements decided, need state machine + error matrix | `feature-to-spec` | `implementation-plan` |
+| spec exists, need ordered verifiable tasks | `implementation-plan` | `code-review` |
+| review a diff/PR, or a thread stuck on style | `code-review` | `bug-fix` |
+| crash / ANR / wrong value / build error | `bug-fix` | `code-review` |
+| restructure without behaviour change | `refactor` (roadmap) | `code-review` |
+
+**Architecture**
+
+| Request shape | Load | Not |
+|---|---|---|
 | "where does this class go?" / layer violation | `layering` | `modularization` |
-| state ownership, effects, rotation loss | `compose-state-effects` | `state-holders` |
-| screen state design, MVVM vs MVI, SavedStateHandle | `state-holders` | `compose-state-effects` |
-| repository / Room / DataStore / offline / Flow emission | `data-layer` | `layering` |
-| DI wiring, scope, MissingBinding, Hilt↔Koin | `dependency-injection` | `layering` |
 | "should we split into modules?" / build time | `modularization` | `layering` |
+| repository / Room / DataStore / offline / Flow emission | `data-layer` | `layering` |
+| screen state design, MVVM vs MVI, SavedStateHandle | `state-holders` | `compose-state-effects` |
+| DI wiring, scope, MissingBinding, Hilt↔Koin | `dependency-injection` | `layering` |
+| start a new feature end to end | `feature-scaffold` | `layering` |
+
+**Compose**
+
+| Request shape | Load | Not |
+|---|---|---|
+| write/refactor a Composable's structure, params, preview | `compose-core` | `compose-component-api` |
+| design a reusable component's API (slots vs booleans) | `compose-component-api` | `design-system` |
+| theme tokens, hardcoded colour/dp, dark mode | `design-system` | `compose-component-api` |
+| state ownership, effects, rotation loss | `compose-state-effects` | `state-holders` |
 | add screen, args, deep link, back behaviour | `compose-navigation` | `compose-state-effects` |
+| transitions, enter/exit, gesture animation | `compose-animation` | `recomposition` |
+| TalkBack, roles, touch targets, focus order | `compose-accessibility` | `rtl-localization` |
+| RTL, translation overflow, plurals, bidi | `rtl-localization` | `design-system` |
+
+**Performance**
+
+| Request shape | Load | Not |
+|---|---|---|
 | "slow", "janky", "recomposes too much" | `recomposition` | `baseline-profiles` |
-| cold start / first-scroll jank only | `baseline-profiles` | `recomposition` |
+| Modifier order, custom layout, double measure | `modifier-and-layout` | `recomposition` |
+| list jank, lost item state, paging re-fetch | `lazy-layouts` | `recomposition` |
+| cold start, first frame, Perfetto | `startup-and-perfetto` | `baseline-profiles` |
+| first-scroll jank after install, startup AOT | `baseline-profiles` | `startup-and-perfetto` |
+| release-only crash, shrinking, mapping | `r8-for-compose` | `release-flow` |
+
+**Build / Quality / Security / Release / Device / Migration**
+
+| Request shape | Load | Not |
+|---|---|---|
 | dependency versions, catalog, BOM | `version-catalog` | `agp9-migration` |
-| AGP 8→9, removed variant API, build script breakage | `agp9-migration` | `version-catalog` |
-| JVM test for VM/repo/mapper, flaky or hanging test | `unit-testing` | `compose-ui-testing` |
+| AGP 8→9, removed variant API | `agp9-migration` | `version-catalog` |
+| JVM test for VM/repo/mapper, flaky test | `unit-testing` | `compose-ui-testing` |
 | Compose interaction test, tag strategy, restoration | `compose-ui-testing` | `unit-testing` |
 | screenshot / visual regression | `screenshot-testing` | `compose-ui-testing` |
-| token storage, crypto, secret leak | `keystore-and-crypto` | `layering` |
-| ship to Play, tracks, staged rollout | `release-flow` | `release-flow` |
+| token storage, crypto, secret leak | `keystore-and-crypto` | `component-exposure` |
+| exported component, PendingIntent, WebView, deep link | `component-exposure` | `network-dto-safety` |
+| DTO nullability, unknown enum, error body | `network-dto-safety` | `data-layer` |
+| ship to Play, tracks, staged rollout | `release-flow` | `r8-for-compose` |
 | automate a device flow, reproduce on hardware | `adb-automation` | `compose-ui-testing` |
 | convert XML layout to Compose, View/Compose interop | `xml-to-compose` | `compose-navigation` |
 
-Names marked `(roadmap)` are planned, not present. If a `## Do not use when` section of another
-skill points at a `(roadmap)` neighbour, treat it as "a different domain owns this" and stop — do
-not stretch the current skill to cover it.
+Names marked `(roadmap)` are planned, not present. If a `## Do not use when` section of another skill
+points at a `(roadmap)` neighbour, treat it as "a different domain owns this" and stop — do not
+stretch the current skill to cover it.
 
 ## Rules
 
-1. **One skill per change.** If two skills genuinely apply, split the change into two commits
-   and route each separately.
-2. **Symptom ≠ task.** Convert to an artefact first: "it's slow" → which screen, which
-   interaction, measured how? If the user cannot answer, ask exactly one clarifying question.
-3. **Order matters for symptoms:** measure → diagnose → fix. Never route a performance
-   complaint straight to a fix skill.
-4. **Respect the do-not-use lists.** Every skill names its neighbours; those lists are the
-   routing contract and override your intuition about the topic.
-5. **Versions never come from a skill.** Any version mentioned in a skill is a catalog key or a
-   URL; the project's `gradle/libs.versions.toml` wins.
-6. **Missing coverage is an answer too.** If no skill covers the task, say so and proceed with
-   the platform docs — do not stretch a neighbouring skill to fit. A neighbour labelled
-   `(roadmap)` does not exist yet.
+1. **One skill per change.** If two skills genuinely apply, split the change into two commits and
+   route each separately.
+2. **Symptom ≠ task.** Convert to an artefact first: "it's slow" → which screen, which interaction,
+   measured how? If the user cannot answer, ask exactly one clarifying question.
+3. **Order matters for symptoms:** measure → diagnose → fix. Never route a performance complaint
+   straight to a fix skill.
+4. **Respect the do-not-use lists.** Every skill names its neighbours; those lists are the routing
+   contract and override your intuition about the topic.
+5. **Versions never come from a skill.** Any version mentioned in a skill is a catalog key or a URL;
+   the project's `gradle/libs.versions.toml` wins.
+6. **Missing coverage is an answer too.** If no skill covers the task, say so and proceed with the
+   platform docs — do not stretch a neighbouring skill to fit. A neighbour labelled `(roadmap)` does
+   not exist yet.
+7. **Spec before code, code before release.** A request that skips a step (build it *and* ship it)
+   is two or three routes, in that order.
 
 ## Checklist
 
@@ -82,6 +123,7 @@ not stretch the current skill to cover it.
 - [ ] The task is an artefact ("edit X in file Y"), not a symptom.
 - [ ] No version literal taken from skill prose.
 - [ ] Multi-domain request split into ordered commits.
+- [ ] No `(roadmap)` neighbour relied upon.
 
 ## Anti-patterns
 
@@ -91,8 +133,10 @@ not stretch the current skill to cover it.
 | Two skills loaded | read both, mix rules | split the change | contradictory checklists |
 | Perf complaint | jump to `recomposition` | measure first | optimise the wrong thing |
 | No matching skill | force-fit the nearest | state the gap, use docs | fabricated rules |
+| Ship request | start with `release-flow` | spec → implement → release | releasing nothing |
+| Style debate | `code-review` opinions | configure lint | wrong tool |
 
 ## Verify
 
-State in one line: `<skill-name> — because <artefact>`. If that line cannot be written, the
-routing is not done.
+State in one line: `<skill-name> — because <artefact>`. If that line cannot be written, the routing
+is not done.
