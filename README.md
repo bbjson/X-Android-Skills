@@ -148,7 +148,7 @@ pi / Claude Code / Codex 会在启动时扫描该目录，把每个 skill 的 `n
 ```bash
 python3 tools/validate.py          # 结构、frontmatter、硬编码版本、长度预算
 python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
-python3 tools/check_routing.py     # 112 条 routing 断言：任务 → 期望 skill
+python3 tools/check_routing.py     # 117 条 routing 断言：任务 → 期望 skill
 python3 tools/check_routing.py --verbose   # 逐条显示
 python3 tools/audit_duplicates.py          # 规则重叠最高的 skill 对（辅助复核，不做判定）
 ```
@@ -158,13 +158,19 @@ python3 tools/audit_duplicates.py          # 规则重叠最高的 skill 对（�
 
 三者角色不同：`validate` 管单个 skill 的形状，`check_refs` 管 skill 之间的指认，
 `check_routing` 管「路由器是否真的把任务送到对的地方」—— 它是本仓库唯一的**行为测试**。
+它还校验 router 的 `Not` 列与 eval 的第三列必须指向真实存在的 skill（拼错即失败，否则
+路由契约会被一个 typo 静默关掉）。
+
+**路由契约是双向的**：新增 skill 时，除写自己的 `## Do not use when`，还要在相邻老 skill 里
+加一条反向指认。本轮补齐 21 个 skill 时就发现老 skill 一条都没指回来（29 条单向引用），
+已补 20 个老 skill、28 条反向条目。
 
 当前状态：
 
 ```
 90 skills — 0 errors, 0 warnings
 90 installed, 0 roadmap — 0 unknown references
-112 routing cases, 89/90 skills covered — 0 failures
+117 routing cases, 89/90 skills covered — 0 failures
 ## Verify 已实跑：285 条 / 222 条执行 / 0 失败 / 16 缺陷已修（docs/verify-report.md）
 ```
 
@@ -186,7 +192,7 @@ docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
 docs/roadmap.txt                      # 规划中的 skill 名（当前为空 = 全部已实现）
 docs/verify-report.md                 # Verify 实跑记录：环境、证据、16 条缺陷、未验证清单
-evals/routing.tsv                     # 112 条 任务→skill 断言
+evals/routing.tsv                     # 117 条 任务→skill 断言
 AGENTS.md                             # 给 agent 的项目约定
 ```
 

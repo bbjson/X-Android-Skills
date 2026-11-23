@@ -68,6 +68,9 @@ column change like an API change, because rollback is not available once users h
     build time.** Losing a required index is a silent performance regression.
 14. **Database tests use `inMemoryDatabaseBuilder` + `clearAllTables`, and migration tests run
     against the previous schema version, not the current one.**
+15. **Text search is an FTS entity, not `LIKE '%term%'`.** A `LIKE` scan cannot use an index and
+    degrades linearly with table size; an FTS table also gives tokenisation and ranking. Keep the
+    FTS row in sync from the same transaction that writes the source table.
 
 ## Procedure
 
@@ -89,6 +92,7 @@ column change like an API change, because rollback is not available once users h
 - [ ] Indices present for FK and list-query columns.
 - [ ] Enum stored by name with `UNKNOWN`; money as integers; time as epoch millis.
 - [ ] Migration test creates the previous version and asserts preserved rows.
+- [ ] Text search uses FTS, not a `LIKE` scan.
 - [ ] No `allowMainThreadQueries()`, no blocking DAO call on main.
 
 ## Anti-patterns

@@ -54,7 +54,8 @@ grouping and PII policy are part of shipping, not afterthoughts.
    collecting, not that there are none.
 6. **`ApplicationExitInfo` closes the historical gap** for crashes and kills that happened before or
    without the SDK: read exit reasons at next start, map `REASON_CRASH`/`REASON_ANR`/`REASON_LOW_MEMORY`,
-   and report them as session-scoped events.
+   and report them as session-scoped events. Guard the call by API level — the API does not exist on
+   older devices, so an unguarded call crashes the app on exactly the devices it was meant to fix.
 7. **Non-fatals are for recoverable failures with an action attached.** Log a handled exception when
    a retry, fallback or user-visible error happened; do not log every `Result.failure` — that
    converts an outage into a quota bill.

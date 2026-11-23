@@ -69,6 +69,9 @@ in the client instance and its interceptors — never in a repository call, neve
     in-memory map in the client.
 14. **Uploads stream from a file/`RequestBody`, downloads write to a file.** Buffering a video into
     a `ByteArray` is an OOM with a progress bar.
+15. **Streaming transport gets its own policy.** SSE and WebSocket frames must not pass through the
+    retry interceptor — replaying a stream duplicates messages; the stream owns its reconnect with
+    resume state, and its read timeout is not the request timeout.
 
 ## Procedure
 
@@ -90,6 +93,7 @@ in the client instance and its interceptors — never in a repository call, neve
 - [ ] Log interceptor disabled in release and strips bodies/tokens.
 - [ ] MockWebServer test covers: 401 refresh, 500 → retry, 429 `Retry-After`, timeout, malformed body.
 - [ ] Uploads/downloads stream; no whole-file byte arrays.
+- [ ] SSE/WebSocket bypasses the request-retry interceptor and owns its reconnect.
 
 ## Anti-patterns
 

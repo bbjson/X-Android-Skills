@@ -72,6 +72,9 @@ by habit gives work that silently never runs.
     start-up sync that compares local pending state with the server, not by hoping the worker fired.
 12. **Test the worker with the test initialiser, and test the constraint paths** (network lost,
     retry, cancellation) rather than only the happy path.
+13. **Expedited work is a quota, not a guarantee.** `setExpedited` starts immediately only while the
+    app's quota lasts, then falls back to a deferred worker; pick the out-of-quota policy explicitly
+    and never make correctness depend on the expedited path.
 
 ## Procedure
 
@@ -95,6 +98,7 @@ by habit gives work that silently never runs.
 - [ ] Force-stop/reboot recovery handled by reconciliation on launch.
 - [ ] Work cancelled on logout, per account.
 - [ ] Tests cover success, retry, failure, cancel, unsatisfiable constraint.
+- [ ] Expedited work has an explicit out-of-quota policy; correctness does not depend on it.
 
 ## Anti-patterns
 

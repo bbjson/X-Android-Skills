@@ -117,3 +117,8 @@ UnsatisfiedLinkError only in release	ndk-jni	crash-reporting
 native crash has no Java stack	ndk-jni	crash-reporting
 second process does not see the config	ipc-and-multiprocess	background-work
 TransactionTooLargeException between processes	ipc-and-multiprocess	room-persistence
+add full-text search over the message table	room-persistence	paging
+chat uses SSE and messages are duplicated after reconnect	network-client	structured-concurrency
+expedited sync worker sometimes runs hours late	background-work	remote-config
+foreground service notification is invisible when notifications are denied	permissions-and-pickers	background-work
+release crashes are obfuscated because the mapping was never uploaded	crash-reporting	r8-for-compose

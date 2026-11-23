@@ -69,6 +69,9 @@ satisfied by a picker that returns one URI and requires no permission.
     are meaningful, and use a channel that the user would recognise.
 11. **Test the refusal paths, not just the grant path**: deny once, deny permanently, revoke in
     settings while the app is running, one-time grant expiry, partial media access.
+12. **A foreground service is not exempt from notification permission.** With notifications denied
+    the service still runs but its notification is hidden, so the user cannot see or stop it;
+    surface progress and a cancel action inside the app instead of relying on the notification.
 
 ## Procedure
 
@@ -91,6 +94,7 @@ satisfied by a picker that returns one URI and requires no permission.
 - [ ] Persistable URI permission taken and revalidated; `SecurityException` handled.
 - [ ] Manifest declares only used permissions, narrowest variant.
 - [ ] Notification permission requested in context.
+- [ ] Foreground-service progress and a stop action exist in-app when notifications are denied.
 - [ ] Refusal paths covered by a test or a manual matrix.
 
 ## Anti-patterns
