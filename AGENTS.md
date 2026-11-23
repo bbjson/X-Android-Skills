@@ -41,10 +41,13 @@ docs/provenance.md                    # upstream sources and what was taken
 
 ```bash
 python3 tools/validate.py
+python3 tools/check_refs.py
+python3 tools/check_routing.py
 ./tools/install.sh --list | tail -3
 ```
 
-Both must be clean. A skill that only "reads well" is not done.
+All must be clean. A skill that only "reads well" is not done. A skill whose `## Verify`
+commands were never executed is a hypothesis — say so when adding one.
 
 ## Domain numbering
 

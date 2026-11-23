@@ -98,9 +98,18 @@ agent reasoning. Repository prose (README, docs) is bilingual.
 ## Reviewing a skill
 
 ```
-tools/validate.py            # structure, frontmatter, hardcoded versions
-tools/audit_duplicates.py    # overlap with sibling skills
+tools/validate.py            # structure, frontmatter, hardcoded versions, length budget
+tools/check_refs.py          # neighbour references must resolve to a real or planned skill
+tools/audit_duplicates.py    # rule-level overlap report (an aid, not a judge)
+tools/check_routing.py       # behavioural test: task -> expected skill
 ```
 
-A skill is merge-ready when: validator passes, no rule duplicates a sibling, and every
-`## Verify` command was actually run once on a real project.
+A skill is merge-ready when all four pass **and** every `## Verify` command was run once
+on a real project.
+
+That last condition is the one this repository cannot satisfy on its own: the commands are
+written from the platform documentation and from the upstream skills, not from a verified
+run against a real Android project. Treat `## Verify` as a hypothesis until you have run it;
+a command that fails on first contact is a skill bug, not a project problem. Known-risk
+areas are the ones whose tools are versioned or environment-dependent: `agp9-migration`,
+`build-performance`, `baseline-profiles`, `kernel-lkm`, `mainline-port`.

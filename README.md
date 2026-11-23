@@ -110,7 +110,11 @@ python3 tools/validate.py          # 结构、frontmatter、硬编码版本、�
 python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
 python3 tools/check_routing.py     # 75 条 routing 断言：任务 → 期望 skill
 python3 tools/check_routing.py --verbose   # 逐条显示
+python3 tools/audit_duplicates.py          # 规则重叠最高的 skill 对（辅助复核，不做判定）
 ```
+
+`audit_duplicates` 的实测结果是：最高重叠 0.18（`compose-navigation` ~ `nav2-to-nav3`），
+且全部 top 对都是「基础 skill ~ 它的迁移/工具 skill」，属于必然交叉而非重复条款。
 
 三者角色不同：`validate` 管单个 skill 的形状，`check_refs` 管 skill 之间的指认，
 `check_routing` 管「路由器是否真的把任务送到对的地方」—— 它是本仓库唯一的**行为测试**。
@@ -134,6 +138,7 @@ templates/SKILL.template.md
 tools/validate.py                     # 结构 + 版本规则校验
 tools/check_refs.py                   # 悬空 skill 引用检测
 tools/check_routing.py                # routing 断言（行为测试）
+tools/audit_duplicates.py             # 规则级重叠报告（供人工复核）
 tools/install.sh                      # 安装器
 docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
