@@ -80,3 +80,40 @@ analyse the release APK's attack surface (our own app)	reverse-engineering	masvs
 scan this diff for Kotlin traps	kotlin-footguns	code-review
 insmod fails with "invalid module format"	kernel-lkm	mainline-port
 port mainline Linux to a phone with an unlocked bootloader	mainline-port	kernel-lkm
+several requests fire the token refresh at once	network-client	network-dto-safety
+interceptor order for auth, retry and logging	network-client	structured-concurrency
+add a column to an entity and ship a migration	room-persistence	data-layer
+"no such column" after an entity change	room-persistence	bug-fix
+infinite list duplicates rows after refresh	paging	lazy-layouts
+RemoteMediator loops forever on end of list	paging	data-layer
+coroutine keeps running after the screen is gone	structured-concurrency	compose-state-effects
+withTimeout does not take effect on a suspend call	structured-concurrency	unit-testing
+two-pane layout on a tablet and a foldable	adaptive-layout	tv-and-focus
+app breaks in split-screen and landscape	adaptive-layout	compose-core
+jank only while a custom chart animates	compose-graphics	recomposition
+draw a progress ring with a gradient	compose-graphics	modifier-and-layout
+the AAB install size grew 20 MB	app-size	r8-for-compose
+put tutorial videos in an on-demand asset pack	app-size	build-variants
+add a staging environment installable beside prod	build-variants	version-catalog
+base URL must differ per flavor	build-variants	network-client
+flaky Espresso test on a RecyclerView screen	view-ui-testing	compose-ui-testing
+test must dismiss the system permission dialog	view-ui-testing	e2e-device-testing
+detect repackaged builds without breaking Play installs	app-hardening	masvs-audit
+release stack trace shows unknown source frames	crash-reporting	vitals-and-reports
+subscription bought but premium is not unlocked	billing-and-subscriptions	release-flow
+analytics event fires twice per tap	analytics-instrumentation	crash-reporting
+kill switch did not turn the feature off	remote-config	release-flow
+Play rejects the upload for targetSdk	targetsdk-bump	agp9-migration
+edge-to-edge broke the layout after a target bump	targetsdk-bump	adaptive-layout
+sync job never runs on one phone model	background-work	structured-concurrency
+foreground service crashes on start	background-work	notifications-fcm
+user denied camera permission and the screen dead-ends	permissions-and-pickers	camera
+saved photo URI stops working after reboot	permissions-and-pickers	data-layer
+photo shows sideways in the list	image-loading	camera
+image grid runs out of memory	image-loading	lazy-layouts
+home-screen widget shows stale data	app-widgets	background-work
+widget tap opens the wrong screen	app-widgets	deep-links
+UnsatisfiedLinkError only in release	ndk-jni	crash-reporting
+native crash has no Java stack	ndk-jni	crash-reporting
+second process does not see the config	ipc-and-multiprocess	background-work
+TransactionTooLargeException between processes	ipc-and-multiprocess	room-persistence

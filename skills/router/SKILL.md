@@ -19,7 +19,7 @@ metadata:
 # Router
 
 Do not start work from a symptom. Name the artefact that must change, then load the one skill that
-owns it. Loading two domain skills for one change is usually a sign the task should be split.
+owns it. Loading two domain skills for one change usually means the change should be split.
 
 ## Use when
 
@@ -55,6 +55,10 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | screen state design, MVVM vs MVI, SavedStateHandle | `state-holders` | `compose-state-effects` |
 | DI wiring, scope, MissingBinding, Hilt↔Koin | `dependency-injection` | `layering` |
 | start a new feature end to end | `feature-scaffold` | `layering` |
+| HTTP client config, 401 refresh, retry, timeouts | `network-client` | `network-dto-safety` |
+| entity/DAO change, Migration, slow query, index | `room-persistence` | `data-layer` |
+| paged list, PagingSource, RemoteMediator, duplicate pages | `paging` | `lazy-layouts` |
+| scope ownership, cancellation, StateFlow vs Channel, async | `structured-concurrency` | `compose-state-effects` |
 
 **Compose**
 
@@ -68,6 +72,8 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | transitions, enter/exit, gesture animation | `compose-animation` | `recomposition` |
 | TalkBack, roles, touch targets, focus order | `compose-accessibility` | `rtl-localization` |
 | RTL, translation overflow, plurals, bidi | `rtl-localization` | `design-system` |
+| tablet/foldable/split-window layout, two-pane, size class | `adaptive-layout` | `tv-and-focus` |
+| chart, ring, custom drawing, jank while animating | `compose-graphics` | `modifier-and-layout` |
 
 **Performance**
 
@@ -79,6 +85,7 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | cold start, first frame, Perfetto | `startup-and-perfetto` | `baseline-profiles` |
 | first-scroll jank after install, startup AOT | `baseline-profiles` | `startup-and-perfetto` |
 | release-only crash, shrinking, mapping | `r8-for-compose` | `release-flow` |
+| APK/AAB too large, split/download size, asset delivery | `app-size` | `r8-for-compose` |
 
 **Build / Quality / Security / Release / Device / Migration**
 
@@ -109,6 +116,14 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | convert XML layout to Compose, View/Compose interop | `xml-to-compose` | `compose-navigation` |
 | MASVS-style audit of your own app | `masvs-audit` | `component-exposure` |
 | AVD will not boot, clean state, parallel emulators | `emulator-management` | `adb-automation` |
+| environments/flavors, BuildConfig, variant source sets | `build-variants` | `gradle-conventions` |
+| Espresso/Fragment test, flaky instrumented test, system dialog | `view-ui-testing` | `compose-ui-testing` |
+| anti-tamper, integrity verdict, root/debug detection, secret placement | `app-hardening` | `masvs-audit` |
+| crash SDK, mapping upload, unreadable stack, ANR capture | `crash-reporting` | `vitals-and-reports` |
+| subscription/one-off purchase, entitlement, acknowledgement | `billing-and-subscriptions` | `play-metadata` |
+| analytics event, funnel, consent gate, exposure event | `analytics-instrumentation` | `crash-reporting` |
+| feature flag, kill switch, remote value, experiment rollout | `remote-config` | `release-flow` |
+| targetSdk bump, edge-to-edge breakage, predictive back, Play deadline | `targetsdk-bump` | `adaptive-layout` |
 
 **Platform and specialized**
 
@@ -130,6 +145,12 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | Kotlin/Compose traps scan of a diff | `kotlin-footguns` | `code-review` |
 | Android kernel module (KO/LKM), vermagic, GKI | `kernel-lkm` | `mainline-port` |
 | port mainline Linux to an Android device | `mainline-port` | `kernel-lkm` |
+| sync/upload job, worker never runs, foreground service type | `background-work` | `structured-concurrency` |
+| permission request, denial path, photo/file picker, URI grant | `permissions-and-pickers` | `app-hardening` |
+| image display, rotated photo, OOM in an image list, cache key | `image-loading` | `app-size` |
+| home-screen widget, Glance, stale widget, widget tap | `app-widgets` | `background-work` |
+| native library, JNI crash, ABI, tombstone, symbolication | `ndk-jni` | `crash-reporting` |
+| android:process, AIDL, bound service, TransactionTooLarge | `ipc-and-multiprocess` | `background-work` |
 
 Names marked `(roadmap)` are planned, not present. If a `## Do not use when` section of another skill
 points at a `(roadmap)` neighbour, treat it as "a different domain owns this" and stop — do not
@@ -141,15 +162,14 @@ stretch the current skill to cover it.
    route each separately.
 2. **Symptom ≠ task.** Convert to an artefact first: "it's slow" → which screen, which interaction,
    measured how? If the user cannot answer, ask exactly one clarifying question.
-3. **Order matters for symptoms:** measure → diagnose → fix. Never route a performance complaint
-   straight to a fix skill.
+3. **Order matters for symptoms:** measure → diagnose → fix; never route a perf complaint straight
+   to a fix skill.
 4. **Respect the do-not-use lists.** Every skill names its neighbours; those lists are the routing
    contract and override your intuition about the topic.
 5. **Versions never come from a skill.** Any version mentioned in a skill is a catalog key or a URL;
    the project's `gradle/libs.versions.toml` wins.
-6. **Missing coverage is an answer too.** If no skill covers the task, say so and proceed with the
-   platform docs — do not stretch a neighbouring skill to fit. A neighbour labelled `(roadmap)` does
-   not exist yet.
+6. **Missing coverage is an answer too.** If no skill covers the task, say so and use the platform
+   docs — do not stretch a neighbour. A neighbour labelled `(roadmap)` does not exist yet.
 7. **Spec before code, code before release.** A request that skips a step (build it *and* ship it)
    is two or three routes, in that order.
 
@@ -159,7 +179,6 @@ stretch the current skill to cover it.
 - [ ] The task is an artefact ("edit X in file Y"), not a symptom.
 - [ ] No version literal taken from skill prose.
 - [ ] Multi-domain request split into ordered commits.
-- [ ] No `(roadmap)` neighbour relied upon.
 
 ## Anti-patterns
 
@@ -170,7 +189,6 @@ stretch the current skill to cover it.
 | Perf complaint | jump to `recomposition` | measure first | optimise the wrong thing |
 | No matching skill | force-fit the nearest | state the gap, use docs | fabricated rules |
 | Ship request | start with `release-flow` | spec → implement → release | releasing nothing |
-| Style debate | `code-review` opinions | configure lint | wrong tool |
 
 ## Verify
 
