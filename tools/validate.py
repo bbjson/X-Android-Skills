@@ -39,9 +39,14 @@ VERSION_EXEMPT = {
 
 VERSION_RE = re.compile(
     r"""(?xi)
-    (?:agp|kotlin|compose|hilt|room|retrofit|espresso|junit|coil|navigation3?)
-    \s*(?:=|:|version|["'])\s*
-    ["']?\d+\.\d+
+    (?:
+        # a coordinate with an explicit version: group:artifact:1.2.3 (quoted or bare)
+        \b[a-z][a-z0-9_.\-]*:[a-z0-9_.\-]+:\d+(?:\.\d+)+
+      | # an assignment whose key names a known dependency family: kotlin = "2.0.0"
+        \b[a-z0-9_.\-]*(?:agp|kotlin|compose|bom|hilt|room|retrofit|espresso|junit|coil|
+            navigation|lifecycle|coroutines|activity|fragment|material|okhttp|mockk|turbine)[a-z0-9_.\-]*
+        \s*=\s*["']?\d+\.\d+
+    )
     """
 )
 LEN_BUDGET = {"core": 200, "advanced": 260, "specialized": 400, "migration": 300}
@@ -76,7 +81,10 @@ def check(path: Path) -> tuple[list[str], list[str]]:
     text = path.read_text(encoding="utf-8")
     fm, body = parse_frontmatter(text)
     slug = path.parent.name
-    rel = path.relative_to(ROOT)
+    try:
+        rel = path.relative_to(ROOT)
+    except ValueError:
+        rel = path
 
     if not fm:
         errs.append("no YAML frontmatter")
@@ -147,7 +155,8 @@ def main(argv: list[str]) -> int:
         if not errs and not warns and quiet:
             continue
         status = "FAIL" if errs else ("WARN" if warns else "ok")
-        print(f"{status}  {p.relative_to(ROOT)}")
+        shown = p.relative_to(ROOT) if p.is_relative_to(ROOT) else p
+        print(f"{status}  {shown}")
         for e in errs:
             print(f"      error: {e}")
         for w in warns:

@@ -33,7 +33,10 @@ done
 # Collect skill directories honouring the filters.
 mapfile -t SKILLS < <(
   find "$SRC/skills" -name SKILL.md -printf '%h\n' | sort | while read -r dir; do
-    if [[ -n "$DOMAIN" && "$dir" != *"/$DOMAIN"* ]]; then continue; fi
+    if [[ -n "$DOMAIN" ]]; then
+      d=$(sed -n 's/^  domain: *//p' "$dir/SKILL.md" | head -1)
+      [[ "$d" == "$DOMAIN" ]] || continue
+    fi
     if [[ -n "$LEVEL" ]]; then
       lvl=$(sed -n '/^  level:/s/^  level: *//p' "$dir/SKILL.md" | head -1)
       [[ "$lvl" == "$LEVEL" ]] || continue

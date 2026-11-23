@@ -31,7 +31,7 @@ numbers come from the project.
 - Adding/removing/upgrading any dependency.
 - Two modules disagree about a library's version.
 - Creating a new module or convention plugin.
-- An agent (or a human) is about to write `implementation("group:artifact:1.2.3")`.
+- An agent (or a human) is about to write `implementation("group:artifact:<version>")`.
 
 ## Do not use when
 

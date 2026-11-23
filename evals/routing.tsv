@@ -1,0 +1,82 @@
+# Routing evals
+# One case per line: task <TAB> expected-skill <TAB> must-not-be (optional, use "-")
+# These are assertions about the router, not about the skills. If a case fails, either the
+# router table lost a route, or the skill's description stopped describing its trigger.
+#
+# run: python3 tools/check_routing.py
+
+crash on rotation, first Caused by in logcat	bug-fix	-
+ANR after 5 seconds on a cold start, main thread blocked	bug-fix	startup-and-perfetto
+"it's broken and I don't know why"	bug-fix	code-review
+build fails with Unresolved reference after adding a dependency	bug-fix	version-catalog
+one-sentence request: add a filter to the feed list	requirements-grill	feature-to-spec
+requirements agreed, need the state machine and error matrix	feature-to-spec	implementation-plan
+spec written, break it into verifiable tasks	implementation-plan	deliver-pr
+review this pull request for correctness and boundaries	code-review	bug-fix
+the review thread is arguing about naming style	code-review	static-analysis
+finished the feature, open a PR with screenshots	deliver-pr	code-review
+extract FeedMapper out of FeedRepository, behaviour unchanged	refactor	code-review
+where should this mapper live, domain or data	layering	modularization
+should we split the app into feature modules	modularization	layering
+repository returns null on failure, UI shows empty data	data-layer	layering
+the list flickers and is empty after rotation	data-layer	compose-state-effects
+two screens need the same loading state, where does it live	state-holders	compose-state-effects
+how do I test that Loading goes to Error then Content	unit-testing	compose-ui-testing
+MissingBinding for ApiService after adding a class	dependency-injection	layering
+scope for a screen-level cache that must not leak	dependency-injection	state-holders
+start a new feature from scratch, wired end to end	feature-scaffold	layering
+write a new composable for the profile card	compose-core	compose-component-api
+the card component has five boolean parameters	compose-component-api	compose-core
+hardcoded purple button and 16.dp padding everywhere	design-system	compose-core
+snackbar fires twice after rotation	compose-state-effects	state-holders
+add a detail screen with a typed id argument and a deep link	compose-navigation	compose-state-effects
+cross-fade between loading and content	compose-animation	recomposition
+TalkBack says "unlabelled button" for the icon	compose-accessibility	compose-component-api
+German labels clip and the back arrow points right in Arabic	rtl-localization	design-system
+tapping the padding around the icon does nothing	modifier-and-layout	recomposition
+scrolling janks and item expanded state resets	lazy-layouts	recomposition
+screen recomposes on every scroll frame	recomposition	baseline-profiles
+cold start is 2.5s, where is the time going	startup-and-perfetto	baseline-profiles
+first scroll after install janks, later scrolls are fine	baseline-profiles	lazy-layouts
+release-only crash with a null DTO field	r8-for-compose	network-dto-safety
+which version of coil should I use, two modules disagree	version-catalog	gradle-conventions
+upgrade from AGP 8 to 9, variant API no longer compiles	agp9-migration	version-catalog
+twelve modules copy the same android block	gradle-conventions	version-catalog
+"Unsupported class file major version 65" on CI only	kotlin-toolchain	gradle-conventions
+Room generated code missing, needs clean to compile	ksp-processing	kotlin-toolchain
+build takes 4 minutes, config cache reports problems	build-performance	ci-pipeline
+slow CI, emulator runs in every PR job	ci-pipeline	build-performance
+ViewModel test hangs forever on a Flow	unit-testing	e2e-device-testing
+Compose test passes but the UI is visibly broken	compose-ui-testing	unit-testing
+add a screenshot baseline for the dark theme	screenshot-testing	compose-ui-testing
+E2E flow spanning login, notification and deep link	e2e-device-testing	compose-ui-testing
+4000 lint warnings nobody reads, baseline keeps growing	static-analysis	code-review
+prove the startup change is 10% faster	benchmark-testing	startup-and-perfetto
+token stored in plain SharedPreferences	keystore-and-crypto	component-exposure
+any app can start our internal Activity	component-exposure	keystore-and-crypto
+new server enum value crashes the app in production	network-dto-safety	component-exposure
+audit our app against MASVS before release	masvs-audit	component-exposure
+promote the build from internal track to production at 5%	release-flow	play-metadata
+Play rejects the upload: certificate mismatch	signing-and-play-signing	release-flow
+"Data Safety form says we collect nothing but we ship Firebase"	data-safety-compliance	release-flow
+crash rate doubled after the 20% rollout	vitals-and-reports	bug-fix
+write the store listing text and screenshots for this release	play-metadata	release-flow
+script an install-launch-tap flow on the attached phone	adb-automation	emulator-management
+AVD says "already running" and will not boot	emulator-management	adb-automation
+migrate the profile screen from XML to Compose	xml-to-compose	compose-core
+move RxJava repository to Flow, events get dropped	rxjava-to-coroutines	compose-state-effects
+converted Java class throws NPE, Java callers fail to compile	java-to-kotlin	refactor
+NavHost still present after migrating to Navigation 3	nav2-to-nav3	compose-navigation
+NoDefinitionFoundException after moving from Hilt to Koin	hilt-to-koin	dependency-injection
+KMP commonMain imports androidx.camera	kmp	layering
+pod install is required in CI, we want SPM	cocoapods-to-spm	kmp
+Wear app drains battery with the screen off	wear-os	compose-core
+remote cannot reach the play button on TV	tv-and-focus	compose-accessibility
+black camera preview after rotation	camera	media3
+audio keeps playing after leaving the player screen	media3	notifications-fcm
+notifications never appear on Android 13	notifications-fcm	deep-links
+a link opens the browser instead of the app	deep-links	component-exposure
+analyse the release APK's attack surface (our own app)	reverse-engineering	masvs-audit
+scan this diff for Kotlin traps	kotlin-footguns	code-review
+insmod fails with "invalid module format"	kernel-lkm	mainline-port
+port mainline Linux to a phone with an unlocked bootloader	mainline-port	kernel-lkm

@@ -57,10 +57,12 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 | 30 performance | `recomposition` `modifier-and-layout` `lazy-layouts` `startup-and-perfetto` `baseline-profiles` `r8-for-compose` | 没有 before/after 数字就不算修复 |
 | 40 build | `version-catalog` `agp9-migration` `gradle-conventions` `kotlin-toolchain` `ksp-processing` `build-performance` `ci-pipeline` | 版本只有一个真相源；配置只写一次；测过再优化 |
 | 50 quality | `unit-testing` `compose-ui-testing` `screenshot-testing` `e2e-device-testing` `static-analysis` `benchmark-testing` | 断言可观察结果；测试必须见过红；基线只减不增 |
-| 60 security | `keystore-and-crypto` `component-exposure` `network-dto-safety` | 密钥不出硬件；导出的组件是没有版本的公开 API |
+| 60 security | `keystore-and-crypto` `component-exposure` `network-dto-safety` `masvs-audit` | 密钥不出硬件；导出的组件是没有版本的公开 API；审计要控制项+证据 |
 | 70 release | `release-flow` `signing-and-play-signing` `play-metadata` `data-safety-compliance` `vitals-and-reports` | 一份产物走完所有 track；表单/政策/APK 三方一致 |
-| 80 device | `adb-automation` | 观察→决策→执行循环，永不 sleep |
-| 95 migration | `xml-to-compose` | 迁移单位是一个屏幕，两个方向互操作但有主有次 |
+| 80 device | `adb-automation` `emulator-management` | 观察→决策→执行循环，永不 sleep；AVD 的锁/快照/端口是三个故障源 |
+| 90 platform | `kmp` `wear-os` `tv-and-focus` `camera` `media3` `notifications-fcm` `deep-links` | 共享无平台语义的部分；焦点就是光标；资源有所有者 |
+| 95 migration | `xml-to-compose` `rxjava-to-coroutines` `java-to-kotlin` `nav2-to-nav3` `hilt-to-koin` `cocoapods-to-spm` | 热/冷与作用域是迁移的真正风险；一次只动一个变量 |
+| 99 specialized | `reverse-engineering` `kotlin-footguns` `kernel-lkm` `mainline-port` | 授权先于分析；编译通过 ≠ 正确；内核 API 以目标树为准 |
 
 几个只有对照多个上游才写得出的规则：
 
@@ -106,9 +108,22 @@ pi / Claude Code / Codex 会在启动时扫描该目录，把每个 skill 的 `n
 ```bash
 python3 tools/validate.py          # 结构、frontmatter、硬编码版本、长度预算
 python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
+python3 tools/check_routing.py     # 75 条 routing 断言：任务 → 期望 skill
+python3 tools/check_routing.py --verbose   # 逐条显示
 ```
 
-当前状态：**69 skills — 0 errors, 0 warnings, 0 unknown references**。
+三者角色不同：`validate` 管单个 skill 的形状，`check_refs` 管 skill 之间的指认，
+`check_routing` 管「路由器是否真的把任务送到对的地方」—— 它是本仓库唯一的**行为测试**。
+
+当前状态：
+
+```
+69 skills — 0 errors, 0 warnings
+69 installed, 0 roadmap — 0 unknown references
+75 routing cases, 68/69 skills covered — 0 failures
+```
+
+`router` 是 meta，不需要 eval 用例；其余 68 个 skill 每个至少被一条 routing 断言覆盖。
 
 ## 仓库结构
 
@@ -118,10 +133,12 @@ skills/router/SKILL.md
 templates/SKILL.template.md
 tools/validate.py                     # 结构 + 版本规则校验
 tools/check_refs.py                   # 悬空 skill 引用检测
+tools/check_routing.py                # routing 断言（行为测试）
 tools/install.sh                      # 安装器
 docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
 docs/roadmap.txt                      # 规划中的 skill 名（当前为空 = 全部已实现）
+evals/routing.tsv                     # 75 条 任务→skill 断言
 AGENTS.md                             # 给 agent 的项目约定
 ```
 
@@ -134,6 +151,20 @@ AGENTS.md                             # 给 agent 的项目约定
 | 1000 行教程 | ≤200 行约束 + 可打勾清单 |
 | 每个仓库各自一套术语 | 统一骨架：Use when / Rules / Checklist / Anti-patterns / Verify |
 | 覆盖率优先 | 冲突消解优先，重复的合并 |
+
+## 成本与取舍
+
+69 个 `name` + `description` 合计 **26,662 字符 ≈ 6,700 tokens**，安装后会全部进入 agent 的系统提示。
+这是可以接受但不免费的：如果上下文紧张，用子集安装。
+
+```bash
+./tools/install.sh --level core                     # 只装 core 级
+./tools/install.sh --domain compose                 # 只装 compose 域
+./tools/install.sh --domain compose --domain build  # 一次一个域，跑多次
+```
+
+`description` 中位数 393 字符（最短 297，最长 474）—— 这是刻意的：routing 靠它选 skill，
+压到 150 字符能省一半 token，但命中率会下降。如果你更在意上下文，可以压；两者不可兼得。
 
 ## License
 

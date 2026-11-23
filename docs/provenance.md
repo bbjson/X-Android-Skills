@@ -18,24 +18,24 @@ Audited: 33 repositories, 1060 `SKILL.md` files, 366 MB (2026-11-23).
 | `skills` (chrisbanes) | 21 | very high | **Adopted** decision-style rule phrasing ("give every piece of UI state one lowest responsible owner") and `compose-focus-navigation`. Best writing in the corpus |
 | `google-play-cli-skills` | 19 | high | **Adopted** the release/operations chain: tracks, release-flow, signing, recovery, vitals, monetization |
 | `awesome-android-agent-skills` | 17 | high | **Adopted as a completeness check only** — its AGP 8.0/8.2 and espresso 3.5.1 pins are stale; content is superseded |
-| `kotlin-kmp-claude-agent-skills` | 15 | medium | **Deferred** to the KMP skill (roadmap); reference for adaptive/CM wording |
+| `kotlin-kmp-claude-agent-skills` | 15 | medium | **Adopted** into `kmp` (source-set + expect/actual wording) |
 | `kotlin-footguns` (maxrave) | 11 | medium | **Adopted** the "run the discriminating experiment first" debugging method and the footgun-scan idea |
-| `android-adb-skill` | 11 | high | **Adopted** as the basis for `adb-automation` (roadmap) |
+| `android-adb-skill` | 11 | high | **Adopted** as the basis for `adb-automation` |
 | `kotlin-agent-skills` (JetBrains) | 10 | medium | **Adopted** migration framing for `agp9-migration`, `java-to-kotlin`, `cocoapods-to-spm`; longest files in the corpus (494–523 lines) but include the version-transition exemption we allow |
 | `Meet-Miyani-compose-skill` | 7 | high | **Reference only** — overlaps `compose-component-api`; its `>-` YAML multiline descriptions are a frontmatter defect |
 | `pushengage-skills` | 6 | low | **Rejected** — single-vendor SDK integration |
 | `compose-ai-tools` (yschimke) | 3 | low | **Rejected** — 192 MB, its skills are about its own render plugin |
 | `store-ready` | 1 | high | **Adopted** the pre-submission audit checklist shape |
 | `app-store-compliance` | 1 | high | **Adopted** the enterprise submission audit categories |
-| `material-3-expressive-skill` | 1 | medium | **Deferred** to `design-system` roadmap entry |
+| `material-3-expressive-skill` | 1 | medium | **Adopted** (M3 Expressive token ideas) into `design-system` |
 | `kmp-compose-multiplatform-skill` | 1 | medium | **Rejected** — 1082 lines, violates the length budget by 3x |
-| `CreditTone/...reverse-engineering` | 1 | medium | **Partially adopted** for `reverse-engineering` (roadmap); Codex-flavoured, needs rewriting |
+| `CreditTone/...reverse-engineering` | 1 | medium | **Partially adopted** into `reverse-engineering` (tool chain only; authorisation-first framing added) |
 | `android-reverse-engineering-skill` (8.7k★) | 1 | medium | **Partially adopted** same as above |
 | `android-kernel-lkm` | 1 | niche | **Kept as `specialized`** (798 lines, exempted: kernel work is genuinely long) |
 | `android-mainline-port` | 1 | niche | **Adopted** as `specialized`, Chinese-language notes preserved |
 | `claude-android-ninja` | 1 | high | **Reference** — AGP 9.2+ assumptions, too aggressive for a default |
 | `Appium-Scripter` | 1 | low | **Rejected** — 2605 lines |
-| `micorlov-e2e-mobile` | 1 | medium | **Deferred** to `e2e-device-testing` (roadmap) |
+| `micorlov-e2e-mobile` | 1 | medium | **Adopted** into `e2e-device-testing` (evidence-on-failure + no-sleep rules) |
 | others (1 each) | 8 | low | **Rejected** unless noted: `phone-spyware-check` (consumer tool), `android-qa-kit`, `android-rea`, `droid-skills`, `compose-skill`, `jetpack-compose-skills`, `Compose-Circuit-Skills`, `kmp-compose-multiplatform-skill` — all overlap adopted skills with less depth |
 
 ## Cross-cutting findings
