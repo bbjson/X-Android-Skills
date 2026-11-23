@@ -44,7 +44,7 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 
 写作标准详见 [`docs/skill-style.md`](docs/skill-style.md)。
 
-## 已实现（37）
+## 已实现（49）
 
 入口是 `router`：任何模糊请求先经它路由，避免"从症状开工"。
 
@@ -55,10 +55,10 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 | 10 architecture | `layering` `modularization` `data-layer` `state-holders` `dependency-injection` `feature-scaffold` | 模块必须能说出它禁止了什么；单一真相源在本地 |
 | 20 compose | `compose-core` `compose-component-api` `compose-state-effects` `compose-navigation` `compose-animation` `compose-accessibility` `design-system` `rtl-localization` | 一个状态一个所有者；slot 代替布尔；token 代替字面量 |
 | 30 performance | `recomposition` `modifier-and-layout` `lazy-layouts` `startup-and-perfetto` `baseline-profiles` `r8-for-compose` | 没有 before/after 数字就不算修复 |
-| 40 build | `version-catalog` `agp9-migration` | 版本只有一个真相源；删掉的 API 必须替换而非压制 |
-| 50 quality | `unit-testing` `compose-ui-testing` `screenshot-testing` | 断言可观察结果；测试必须见过红 |
+| 40 build | `version-catalog` `agp9-migration` `gradle-conventions` `kotlin-toolchain` `ksp-processing` `build-performance` `ci-pipeline` | 版本只有一个真相源；配置只写一次；测过再优化 |
+| 50 quality | `unit-testing` `compose-ui-testing` `screenshot-testing` `e2e-device-testing` `static-analysis` `benchmark-testing` | 断言可观察结果；测试必须见过红；基线只减不增 |
 | 60 security | `keystore-and-crypto` `component-exposure` `network-dto-safety` | 密钥不出硬件；导出的组件是没有版本的公开 API |
-| 70 release | `release-flow` | 一份产物走完所有 track；止血条件是数字 |
+| 70 release | `release-flow` `signing-and-play-signing` `play-metadata` `data-safety-compliance` `vitals-and-reports` | 一份产物走完所有 track；表单/政策/APK 三方一致 |
 | 80 device | `adb-automation` | 观察→决策→执行循环，永不 sleep |
 | 95 migration | `xml-to-compose` | 迁移单位是一个屏幕，两个方向互操作但有主有次 |
 
@@ -71,19 +71,13 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 - Play 放量前必须有**数值**止血条件，且「回滚 = 撤销放量 + 重推旧版本号」
 - `coerceInputValues` 会让 DTO 类型漂移静默变默认值，这是掩盖而非修复
 
-## Roadmap（32）
+## Roadmap（20）
 
 已规划、尚未落地。来源与取舍见 `docs/provenance.md`，名称清单在 `docs/roadmap.txt`。
 
 **00 workflow** `refactor` · `deliver-pr`
 
-**40 build** `gradle-conventions` · `kotlin-toolchain` · `ksp-processing` · `build-performance` · `ci-pipeline`
-
-**50 quality** `e2e-device-testing` · `static-analysis` · `benchmark-testing`
-
 **60 security** `masvs-audit`
-
-**70 release** `signing-and-play-signing` · `play-metadata` · `data-safety-compliance` · `vitals-and-reports`
 
 **80 device** `emulator-management`
 
@@ -121,7 +115,7 @@ python3 tools/validate.py          # 结构、frontmatter、硬编码版本、�
 python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
 ```
 
-当前状态：**37 skills — 0 errors, 0 warnings, 0 unknown references**。
+当前状态：**49 skills — 0 errors, 0 warnings, 0 unknown references**。
 
 ## 仓库结构
 
@@ -154,7 +148,7 @@ Apache-2.0。上游仓库多为 Apache-2.0；4 个无 License 的仓库未被逐
 
 ## 英文摘要
 
-Thirty-seven consolidated Android agent skills distilled from 33 public repositories and 1060
+Forty-nine consolidated Android agent skills distilled from 33 public repositories and 1060
 `SKILL.md` files. The differentiator is a single enforced constraint — **no skill may pin a
 dependency version** — plus a fixed rule/checklist/verify skeleton that makes every skill reviewable
 against a diff. See `docs/provenance.md` for what was taken from where and `docs/skill-style.md` for

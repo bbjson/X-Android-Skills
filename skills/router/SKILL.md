@@ -85,13 +85,25 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 |---|---|---|
 | dependency versions, catalog, BOM | `version-catalog` | `agp9-migration` |
 | AGP 8→9, removed variant API | `agp9-migration` | `version-catalog` |
+| duplicated build config, build-logic, plugin ids | `gradle-conventions` | `version-catalog` |
+| JDK toolchain, jvmTarget, Kotlin/Compose compiler version | `kotlin-toolchain` | `agp9-migration` |
+| annotation processor, generated code missing, kapt→KSP | `ksp-processing` | `kotlin-toolchain` |
+| build takes minutes, config cache problems | `build-performance` | `ci-pipeline` |
+| CI workflow, caching, managed devices, release job | `ci-pipeline` | `release-flow` |
 | JVM test for VM/repo/mapper, flaky test | `unit-testing` | `compose-ui-testing` |
 | Compose interaction test, tag strategy, restoration | `compose-ui-testing` | `unit-testing` |
 | screenshot / visual regression | `screenshot-testing` | `compose-ui-testing` |
+| E2E flow across app/OS boundaries | `e2e-device-testing` | `compose-ui-testing` |
+| lint/detekt/ktlint noise, baselines, CI gate | `static-analysis` | `code-review` |
+| prove a perf claim, benchmark gate | `benchmark-testing` | `startup-and-perfetto` |
 | token storage, crypto, secret leak | `keystore-and-crypto` | `component-exposure` |
 | exported component, PendingIntent, WebView, deep link | `component-exposure` | `network-dto-safety` |
 | DTO nullability, unknown enum, error body | `network-dto-safety` | `data-layer` |
 | ship to Play, tracks, staged rollout | `release-flow` | `r8-for-compose` |
+| keystore, upload key, Play App Signing, rotation | `signing-and-play-signing` | `release-flow` |
+| listing text/images, locales, changelogs | `play-metadata` | `data-safety-compliance` |
+| Data Safety form, privacy policy, sensitive permissions | `data-safety-compliance` | `keystore-and-crypto` |
+| crash/ANR rate, frozen frames, halt or hotfix | `vitals-and-reports` | `bug-fix` |
 | automate a device flow, reproduce on hardware | `adb-automation` | `compose-ui-testing` |
 | convert XML layout to Compose, View/Compose interop | `xml-to-compose` | `compose-navigation` |
 
