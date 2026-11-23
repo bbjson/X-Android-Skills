@@ -35,6 +35,7 @@ inside it; only the slices tell you whether to halt, hotfix, or ignore.
 - The cause of a specific crash is unknown → `bug-fix` (with the stack trace + mapping).
 - The release mechanics (tracks, rollout steps) → `release-flow`.
 - Startup/render performance in your own measurements → `startup-and-perfetto`.
+- Producing and symbolicating your own crash/ANR reports → `crash-reporting`.
 
 ## Rules
 

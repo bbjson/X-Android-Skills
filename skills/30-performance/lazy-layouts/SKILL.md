@@ -35,6 +35,7 @@ identity (wrong keys) and work per item (formatting, allocation, unbounded measu
 - The jank is also present on non-list screens → `recomposition`.
 - The list source/pagination is a data-layer concern → `data-layer`.
 - The first-frame (pre-list) cost dominates → `startup-and-perfetto`.
+- Page loading, RemoteMediator and refresh/append states → `paging`.
 
 ## Rules
 

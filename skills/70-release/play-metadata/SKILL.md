@@ -35,6 +35,7 @@ and it is the only thing a user reads before installing.
 - The release sequence and rollout → `release-flow`.
 - The Data Safety form and privacy policy → `data-safety-compliance`.
 - Post-release metrics → `vitals-and-reports`.
+- Product, price and subscription configuration in the console → `billing-and-subscriptions`.
 
 ## Rules
 

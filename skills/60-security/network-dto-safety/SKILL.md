@@ -35,6 +35,7 @@ be absent, null, a different type, or a string where you expect a number.
 - The mapping layer/ownership question → `data-layer`.
 - The trust boundary is a component/Intent/WebView → `component-exposure`.
 - The failure has no reproduction yet → `bug-fix`.
+- Transport policy around the DTO (timeouts, retries, 401 refresh) → `network-client`.
 
 ## Rules
 

@@ -37,6 +37,7 @@ it takes values, it returns `Unit`, and it does no work that is not about layout
 - The question is the public API shape of a reusable component → `compose-component-api`.
 - The question is theme tokens and colours → `design-system`.
 - The measured problem is recomposition cost → `recomposition`.
+- Sizing a screen for tablet/foldable/split-window targets → `adaptive-layout`.
 
 ## Rules
 

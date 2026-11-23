@@ -34,6 +34,8 @@ not released, or a provider rebuilt at the wrong time.
 - The task is picking an existing image (photo picker) — no camera involved.
 - The task is scanning a barcode → ML Kit / CameraX analyzer, not this skill's capture path.
 - The task is video playback → `media3`.
+- Permission UX, pickers and URI grants → `permissions-and-pickers`.
+- Displaying, rotating or caching the captured image → `image-loading`.
 
 ## Rules
 

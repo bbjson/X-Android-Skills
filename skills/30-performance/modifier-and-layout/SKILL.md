@@ -35,6 +35,7 @@ tells you which wrapper is outermost — and therefore what the user actually to
 - The cost is recomposition (`@Composable` re-execution) → `recomposition`.
 - The cost is lazy list item management → `lazy-layouts`.
 - The question is a component's API → `compose-component-api`.
+- Drawing content (charts, rings, gradients) rather than placing it → `compose-graphics`.
 
 ## Rules
 

@@ -23,6 +23,8 @@ def parse_router() -> tuple[set[str], dict[str, str]]:
     nots: dict[str, str] = {}
     for line in (ROOT / "skills/router/SKILL.md").read_text().splitlines():
         line = line.strip()
+        if line.startswith("## Rules"):
+            break          # only the routing tables are routing data; anti-patterns are not
         if not line.startswith("|") or line.startswith("|---") or "Request shape" in line:
             continue
         cells = [c.strip() for c in line.strip("|").split("|")]
@@ -64,6 +66,8 @@ def main(argv: list[str]) -> int:
             problems.append(f"router never routes to '{skill}'")
         if forbidden != "-" and forbidden == skill:
             problems.append("expected and forbidden skill are the same")
+        if forbidden != "-" and forbidden not in installed:
+            problems.append(f"forbidden skill '{forbidden}' does not exist")
         if problems:
             failures += 1
             print(f"FAIL  {EVALS.name}:{lineno}  {task[:56]}")
@@ -71,6 +75,12 @@ def main(argv: list[str]) -> int:
                 print(f"        {p}")
         elif verbose:
             print(f"ok    {task[:56]} -> {skill}")
+
+    # A `Not` column that names a typo silently disables the routing contract.
+    for load, not_ in sorted(nots.items()):
+        if not_ not in installed and not_ not in {"Not", ""}:
+            failures += 1
+            print(f"FAIL  router 'Not' column for '{load}' names unknown skill '{not_}'")
 
     covered = {c[1] for c in cases}
     # `router` is meta and routes to itself by definition; no eval case can be meaningful.

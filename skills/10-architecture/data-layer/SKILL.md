@@ -35,6 +35,9 @@ transactional.** Everything else is an implementation detail of how that place i
 - The question is which layer a class belongs to → `layering`.
 - The problem is state ownership in the UI → `compose-state-effects`.
 - The problem is DTO field types and nullability at the API edge → `network-dto-safety`.
+- Schema changes, migrations, indices and query shape → `room-persistence`.
+- Page keys, RemoteMediator and end-of-list detection → `paging`.
+- Timeouts, retry policy, auth refresh and interceptor order → `network-client`.
 
 ## Rules
 

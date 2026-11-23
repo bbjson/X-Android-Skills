@@ -35,6 +35,8 @@ be automated, which requires a human gate, and what the rollback is at each poin
 - The blocker is signing key configuration → `signing-and-play-signing`.
 - Store listing text, screenshots, Data Safety form → `play-metadata` / `data-safety-compliance`.
 - Crash/ANR rates must be interpreted after release → `vitals-and-reports`.
+- Server-controlled rollout, kill switches after release → `remote-config`.
+- Purchase or subscription mechanics inside the release → `billing-and-subscriptions`.
 
 ## Rules
 

@@ -33,6 +33,7 @@ routes typed, back stack owned, and ViewModel scopes aligned with it.
 
 - The question is focus order for TV/keyboard → `tv-and-focus`.
 - Sheer routing of skills, not app screens → `router`.
+- Widget or shortcut entry points that deep-link into the graph → `app-widgets`.
 
 ## Rules
 

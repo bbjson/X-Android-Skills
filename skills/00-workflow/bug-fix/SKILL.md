@@ -33,6 +33,7 @@ you formed**. A patch that "seems to help" is a regression you have not noticed 
 - Behaviour is not specified yet (the "bug" is a spec gap) → `requirements-grill`.
 - The task is restructuring code with no behaviour change → `refactor`.
 - Only tests are missing and behaviour is correct → `unit-testing` / `compose-ui-testing`.
+- A production failure visible only in telemetry → `crash-reporting`.
 
 ## Rules
 

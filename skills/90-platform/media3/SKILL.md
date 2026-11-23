@@ -34,6 +34,7 @@ the owner right prevents both "audio after exit" and "stops on background".
 - The task is capturing media → `camera`.
 - The task is notifications unrelated to playback → `notifications-fcm`.
 - The task is a short sound effect → `SoundPool`, not a media session.
+- Keeping a service alive across process death or Doze → `background-work`.
 
 ## Rules
 

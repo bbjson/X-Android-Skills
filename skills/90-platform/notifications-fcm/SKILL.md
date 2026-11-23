@@ -35,6 +35,8 @@ nobody else; the platform will not fix a wrong channel.
 - The concern is the deep link target/validation → `deep-links` / `component-exposure`.
 - The concern is background work scheduling (WorkManager, long-running jobs) — not here; see the
   platform docs for `WorkManager`.
+- The job that produces the notification's data → `background-work`.
+- The notification permission request flow → `permissions-and-pickers`.
 
 ## Rules
 

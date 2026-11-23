@@ -37,6 +37,7 @@ tree.
 - The question is a component's parameter API → `compose-component-api`.
 - The question is font-size/colour tokens → `design-system`.
 - The question is bidi/RTL layout → `rtl-localization`.
+- Descriptions for content drawn on a canvas → `compose-graphics`.
 
 ## Rules
 

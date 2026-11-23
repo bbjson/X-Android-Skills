@@ -34,6 +34,7 @@ the manifest filter, the verification artefact, and the route parser.
 - The concern is an exported Activity receiving an arbitrary Intent → `component-exposure`.
 - The concern is navigation graph shape → `compose-navigation`.
 - The concern is push payload → `notifications-fcm`.
+- Widget taps that must deep-link into a destination → `app-widgets`.
 
 ## Rules
 

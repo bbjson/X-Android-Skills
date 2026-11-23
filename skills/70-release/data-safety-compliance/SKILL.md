@@ -36,6 +36,7 @@ suspension.
 - The concern is on-device secret storage → `keystore-and-crypto`.
 - The concern is exported components/intents → `component-exposure`.
 - The release sequence itself → `release-flow`.
+- Consent-gated event collection and retention → `analytics-instrumentation`.
 
 ## Rules
 

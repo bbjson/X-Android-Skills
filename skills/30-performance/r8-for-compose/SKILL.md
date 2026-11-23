@@ -38,6 +38,8 @@ JS bridges — is at risk.
 - The problem is an obfuscated *stack trace* only → still this skill (mapping), but the fix may be
   `bug-fix`.
 - The build fails to compile before minification → `bug-fix` / `agp9-migration`.
+- Mapping upload, symbolication and ANR capture → `crash-reporting`.
+- Signature, integrity or tamper checks → `app-hardening`.
 
 ## Rules
 

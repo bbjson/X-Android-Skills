@@ -66,6 +66,22 @@ into a fresh project and breaks. Here versions come from one place only:
 Only exceptions: version-locked migrations (e.g. `agp9-migration`) may name the *from* version,
 because that is the subject of the skill.
 
+## Neighbour contract (`## Do not use when`)
+
+The router's rule 4 says these lists *are* the routing contract. That only holds if the edges are
+bidirectional: when a skill claims a decision surface, the neighbour that used to own part of it
+must name the new skill too. Otherwise an agent that loads `data-layer` for "Room migration" is
+never told `room-persistence` exists.
+
+When adding a skill:
+
+1. List every neighbour whose surface you are carving out.
+2. Add one ``- <situation> → `slug`.`` line to each of those neighbours.
+3. Re-run `tools/check_refs.py` (names must resolve) and `tools/check_routing.py` (the `Not` column
+   and every eval's third column must name a real skill).
+
+A one-way edge is not a style issue; it is a routing hole.
+
 ## Rule quality bar
 
 A rule is only allowed if all three hold:

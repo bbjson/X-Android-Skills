@@ -35,6 +35,8 @@ identically, the configuration belongs in a plugin, not in both files.
 - The problem is which version to use → `version-catalog`.
 - The problem is AGP API removals → `agp9-migration`.
 - The problem is build speed → `build-performance`.
+- Environments, flavors, per-variant config and source sets → `build-variants`.
+- Bundle/APK size and delivery decisions → `app-size`.
 
 ## Rules
 

@@ -34,6 +34,7 @@ broken" is one of those three.
 - The task is driving the app on a device → `adb-automation`.
 - Benchmarks are needed → `benchmark-testing` (emulators are invalid for those).
 - The task is on a physical device only → `adb-automation`.
+- Verifying a layout across window sizes on a device → `adaptive-layout`.
 
 ## Rules
 

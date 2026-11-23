@@ -34,6 +34,8 @@ faster" — is not a measurement.
 - You do not yet know *what* is slow → `startup-and-perfetto` / `recomposition` first.
 - The claim is correctness → `unit-testing`.
 - The measurement is of the build, not the app → `build-performance`.
+- APK/AAB size as the metric → `app-size`.
+- Native hot paths and JNI overhead → `ndk-jni`.
 
 ## Rules
 
