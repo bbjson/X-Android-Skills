@@ -316,3 +316,92 @@ python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture           # ex
 - `tools/validate.py` now requires every `## Verify` to contain a bash block **or** an
   `Expected:` outcome — a Verify that cannot be checked is now an error.
 - 8 prose Verify sections gained an explicit `Expected:` line.
+
+---
+
+# Round 2 — the 21 coverage-gap skills
+
+Date: 2026-11-23 · Skills: 90 · Commands extracted from the new 21: **87**
+
+Same fixture, same emulator (`emulator-5554`), plus a physical device (`v47pscaqvo4pizo7`). The
+fixture had to be built with `JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64` — the JDK 21 install on
+this host is a JRE, exactly the failure recorded above.
+
+## Method
+
+`python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture --only <slug>` for each of the
+21 new skills, once for the real run and once with `--dry` to classify the commands.
+
+| Command class | Count |
+|---|---|
+| `DEVICE` | 34 |
+| `GRADLE` | 23 |
+| `SHELL` | 15 |
+| Skipped: dangerous / environment-mutating | 10 |
+| Skipped: placeholder | 4 |
+| Skipped: dependency absent | 1 |
+| **Executed** | **72** |
+
+18 of 21 skills reached **VERIFIED** (every executed command exited 0). Three are **PARTIAL** for
+reasons that are fixture limits, not skill bugs — see the "not verified" list.
+
+Repo totals after round 2: **285 commands extracted, 222 executed, 0 failures.**
+
+## Defects found and fixed
+
+### 9. `grep -v` returns 1 when the result is clean
+
+```
+grep -rn "GlobalScope" --include=*.kt app core domain | grep -v Test
+# exit 1 — no non-test matches, which is the desired outcome
+```
+
+Three skills used "must be empty" greps whose *success* is exit code 1. A human reads the empty
+output correctly; a script reports a failure, and so would CI. Rewritten as `... | wc -l` with
+`# expected: 0`, so success is exit 0 and the number is visible.
+Affected: `structured-concurrency`, `build-variants`, `app-hardening`, `analytics-instrumentation`.
+
+### 10. `|| true` is split into a second command
+
+```
+ok   [SHELL] analytics-instrumentation    grep -rn 'logEvent' ... | grep -v -i test
+ok   [SHELL] analytics-instrumentation    true
+```
+
+The extractor splits the line, so the guard runs as its own command and the original still fails.
+Not used in any Verify block any more — use a pipeline that ends in `wc -l` / `grep -c` instead.
+
+### 11. Uppercase placeholders are never skipped
+
+`classify()` recognises placeholders as `<[a-z][a-z-]*>`, so `<Flavor>`, `<CHANGE_ID>` and
+`<WidgetReceiver>` were passed through to a real command and failed:
+
+```
+./gradlew :app:assemble<Flavor>Debug
+> Task 'assemble<Flavor>Debug' not found
+```
+
+Renamed to `<flavor>`, `<change-id>`, `<widget-receiver>`. The rule for new skills: placeholders are
+lowercase, otherwise they are executed.
+
+### 12. `grep -c` exits 1 on zero matches
+
+`adb shell dumpsys appwidget | grep -c '<pkg>'` is the correct assertion for a project that ships a
+widget, but the fixture ships none, so the count is 0 and `grep -c` exits 1. Kept as written (it is
+right for the skill's audience) and recorded as unverifiable in this fixture rather than softened.
+
+## Not verified — explicitly
+
+| Skill | Why |
+|---|---|
+| `ndk-jni` | the fixture has no `externalNativeBuild`; `readelf`/`ndk-stack` had no `.so` to read. The Gradle task and symbol tooling matrix are untested here. |
+| `app-widgets` | no widget provider in the fixture; the instance/broadcast assertions had nothing to find. |
+| `billing-and-subscriptions` | needs a licence-tester account and Play Console products; only the client-connection commands ran. |
+| `analytics-instrumentation` | needs a vendor SDK; the debug-mode property and Logcat filter are untested. |
+| `background-work` (effect) | the commands ran, but Doze/standby *effects* (deferred vs dropped) were not observed across a real idle window. |
+| `adaptive-layout` (visual) | `wm size`/`wm density` ran; the visual two-pane result was not reviewed. |
+| `permissions-and-pickers` (dialogs) | `pm revoke`/`am start` ran; the three-state UX was not exercised. |
+| `targetsdk-bump` (behaviour) | lint and the package dump ran; no API-level behaviour change was actually toggled with `am compat`. |
+
+These are hypotheses until run in a project that has the feature. The corresponding skills say so
+in `## Verify` by naming the device/project condition the command needs.
