@@ -1,22 +1,2 @@
 # Planned skill names (one slug per line). Referenced by tools/check_refs.py.
-# Moving a name from here to skills/ is the definition of "implemented".
-camera
-cocoapods-to-spm
-deep-links
-deliver-pr
-emulator-management
-hilt-to-koin
-java-to-kotlin
-kernel-lkm
-kmp
-kotlin-footguns
-mainline-port
-masvs-audit
-media3
-nav2-to-nav3
-notifications-fcm
-refactor
-reverse-engineering
-rxjava-to-coroutines
-tv-and-focus
-wear-os
+# Empty: all planned skills are implemented. A name here means "referenced but not written yet".

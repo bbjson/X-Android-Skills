@@ -42,7 +42,8 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | spec exists, need ordered verifiable tasks | `implementation-plan` | `code-review` |
 | review a diff/PR, or a thread stuck on style | `code-review` | `bug-fix` |
 | crash / ANR / wrong value / build error | `bug-fix` | `code-review` |
-| restructure without behaviour change | `refactor` (roadmap) | `code-review` |
+| restructure without behaviour change | `refactor` | `code-review` |
+| finished work → pull request, merge strategy | `deliver-pr` | `code-review` |
 
 **Architecture**
 
@@ -106,6 +107,29 @@ owns it. Loading two domain skills for one change is usually a sign the task sho
 | crash/ANR rate, frozen frames, halt or hotfix | `vitals-and-reports` | `bug-fix` |
 | automate a device flow, reproduce on hardware | `adb-automation` | `compose-ui-testing` |
 | convert XML layout to Compose, View/Compose interop | `xml-to-compose` | `compose-navigation` |
+| MASVS-style audit of your own app | `masvs-audit` | `component-exposure` |
+| AVD will not boot, clean state, parallel emulators | `emulator-management` | `adb-automation` |
+
+**Platform and specialized**
+
+| Request shape | Load | Not |
+|---|---|---|
+| KMP source sets, expect/actual, shared UI decision | `kmp` | `cocoapods-to-spm` |
+| CocoaPods → SPM for a KMP iOS target | `cocoapods-to-spm` | `kmp` |
+| Wear OS module, tiles, ambient mode, data layer | `wear-os` | `compose-core` |
+| Android TV, D-pad focus, Back on TV | `tv-and-focus` | `compose-accessibility` |
+| camera capture, preview, lens switch | `camera` | `media3` |
+| audio/video playback, background session, focus | `media3` | `notifications-fcm` |
+| push, channels, FCM token, tap intent | `notifications-fcm` | `deep-links` |
+| App Links, custom scheme, assetlinks verification | `deep-links` | `component-exposure` |
+| RxJava → coroutines/Flow | `rxjava-to-coroutines` | `unit-testing` |
+| Java class/module → Kotlin, Java callers | `java-to-kotlin` | `refactor` |
+| NavHost/NavController → Nav3 back stack | `nav2-to-nav3` | `compose-navigation` |
+| Hilt → Koin, scope mapping, graph verify | `hilt-to-koin` | `dependency-injection` |
+| legal APK analysis of your own build | `reverse-engineering` | `masvs-audit` |
+| Kotlin/Compose traps scan of a diff | `kotlin-footguns` | `code-review` |
+| Android kernel module (KO/LKM), vermagic, GKI | `kernel-lkm` | `mainline-port` |
+| port mainline Linux to an Android device | `mainline-port` | `kernel-lkm` |
 
 Names marked `(roadmap)` are planned, not present. If a `## Do not use when` section of another skill
 points at a `(roadmap)` neighbour, treat it as "a different domain owns this" and stop — do not

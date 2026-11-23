@@ -44,7 +44,7 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 
 写作标准详见 [`docs/skill-style.md`](docs/skill-style.md)。
 
-## 已实现（49）
+## 已实现（69）
 
 入口是 `router`：任何模糊请求先经它路由，避免"从症状开工"。
 
@@ -71,21 +71,14 @@ pi / Claude Code / Codex / Cursor / Gemini CLI / Copilot 等直接加载。
 - Play 放量前必须有**数值**止血条件，且「回滚 = 撤销放量 + 重推旧版本号」
 - `coerceInputValues` 会让 DTO 类型漂移静默变默认值，这是掩盖而非修复
 
-## Roadmap（20）
+## Roadmap
 
-已规划、尚未落地。来源与取舍见 `docs/provenance.md`，名称清单在 `docs/roadmap.txt`。
+**全部 69 个已实现，roadmap 为空。** 后续如果新增，规则是：先在 `docs/roadmap.txt` 登记名字，
+实现后从该文件移除 —— `tools/check_refs.py` 用它区分「规划中」和「写错了名字」。
 
-**00 workflow** `refactor` · `deliver-pr`
-
-**60 security** `masvs-audit`
-
-**80 device** `emulator-management`
-
-**90 platform** `kmp` · `wear-os` · `tv-and-focus` · `camera` · `media3` · `notifications-fcm` · `deep-links`
-
-**95 migration** `rxjava-to-coroutines` · `java-to-kotlin` · `nav2-to-nav3` · `hilt-to-koin` · `cocoapods-to-spm`
-
-**99 specialized** `reverse-engineering` · `kotlin-footguns` · `kernel-lkm` · `mainline-port`
+尚未覆盖、但可能有价值的后续方向（非承诺）：Robolectric 单元测试细节、Compose Multiplatform 专门技能、
+Kotlin 编译器插件编写、AAB 体积优化（resource shrink / abi splits）、baseline profile 与 macrobenchmark
+的 CI 矩阵、Firebase App Distribution / TestFlight 双平台发布。
 
 ## 安装
 
@@ -115,7 +108,7 @@ python3 tools/validate.py          # 结构、frontmatter、硬编码版本、�
 python3 tools/check_refs.py        # 邻居引用必须落在「已实现 ∪ roadmap」内
 ```
 
-当前状态：**49 skills — 0 errors, 0 warnings, 0 unknown references**。
+当前状态：**69 skills — 0 errors, 0 warnings, 0 unknown references**。
 
 ## 仓库结构
 
@@ -148,7 +141,7 @@ Apache-2.0。上游仓库多为 Apache-2.0；4 个无 License 的仓库未被逐
 
 ## 英文摘要
 
-Forty-nine consolidated Android agent skills distilled from 33 public repositories and 1060
+Sixty-nine consolidated Android agent skills distilled from 33 public repositories and 1060
 `SKILL.md` files. The differentiator is a single enforced constraint — **no skill may pin a
 dependency version** — plus a fixed rule/checklist/verify skeleton that makes every skill reviewable
 against a diff. See `docs/provenance.md` for what was taken from where and `docs/skill-style.md` for
