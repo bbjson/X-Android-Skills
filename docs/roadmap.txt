@@ -13,11 +13,7 @@ crash-reporting
 image-loading
 ipc-and-multiprocess
 ndk-jni
-network-client
-paging
 permissions-and-pickers
 remote-config
-room-persistence
-structured-concurrency
 targetsdk-bump
 view-ui-testing
