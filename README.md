@@ -121,7 +121,7 @@ tools/check_refs.py                   # 悬空 skill 引用检测
 tools/install.sh                      # 安装器
 docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
-docs/roadmap.txt                      # 32 个规划中的 skill 名
+docs/roadmap.txt                      # 规划中的 skill 名（当前为空 = 全部已实现）
 AGENTS.md                             # 给 agent 的项目约定
 ```
 
