@@ -176,3 +176,6 @@ stretch the current skill to cover it.
 
 State in one line: `<skill-name> — because <artefact>`. If that line cannot be written, the routing
 is not done.
+
+Expected: one skill name plus the artefact that made it the right choice; if that line cannot be written, routing is not done.
+

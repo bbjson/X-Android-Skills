@@ -107,6 +107,8 @@ The PR is reviewable when a reviewer who has not seen the work can answer from t
 
 If any answer requires asking you, the description is incomplete.
 
+Expected: a reviewer who never saw the work can answer all four questions from the description alone.
+
 ## References
 
 - `code-review` — the rubric the reviewer will apply

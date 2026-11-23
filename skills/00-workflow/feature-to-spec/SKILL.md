@@ -105,6 +105,8 @@ The spec is complete when a second engineer can answer, from the document alone:
 
 If any answer requires asking the author, the spec is not finished.
 
+Expected: a second engineer can answer the three questions without asking the author.
+
 ## References
 
 - `state-holders` — the shape of the UiState types this spec names

@@ -123,6 +123,12 @@ def check(path: Path) -> tuple[list[str], list[str]]:
     if "## Rules" in body and not re.search(r"^1\. ", body, re.M):
         errs.append("Rules section has no numbered rules")
 
+    verify = re.search(r"^## Verify\s*$(.*?)(?=^## |\Z)", body, re.S | re.M)
+    if verify:
+        seg = verify.group(1)
+        if "```bash" not in seg and "expected" not in seg.lower():
+            errs.append("Verify has neither a bash block nor an 'Expected' outcome")
+
     if slug not in VERSION_EXEMPT:
         for i, line in enumerate(text.splitlines(), 1):
             hit = VERSION_RE.search(line)

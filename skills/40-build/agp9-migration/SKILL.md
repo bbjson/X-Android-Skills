@@ -67,6 +67,15 @@ someone deleted the check". A migration is complete only when every removed API 
    bump** — an AGP bump that also raises `compileSdk` conflates two failures.
 10. **Record the outcome**: AGP version, Gradle wrapper version, Kotlin version, JDK, and the
     exact list of removed APIs you replaced. Without this, the next upgrade re-discovers them.
+11. **AGP 9 ships Kotlin support built in — remove `org.jetbrains.kotlin.android`.** Applying it
+    fails outright: `The 'org.jetbrains.kotlin.android' plugin is no longer required for Kotlin
+    support since AGP 9.0`. Delete it from every module and from the convention plugins. The
+    Compose compiler plugin (`org.jetbrains.kotlin.plugin.compose`) is still required wherever
+    `buildFeatures.compose = true`.
+12. **`compileSdk` rises with the AGP minor, not just the major.** AGP 9.1 rejects a project below
+    compileSdk 36; AGP 9.5 rejects below 37 — with an "AAR metadata" error naming the library that
+    demands it, which reads like a dependency problem. Read the number in the error before
+    downgrading the library.
 
 ## Procedure
 

@@ -109,7 +109,8 @@ transactional.** Everything else is an implementation detail of how that place i
 ```bash
 ./gradlew :core:data:test
 # migration test must run against the previous schema version
-./gradlew :core:data:connectedAndroidTest --tests '*MigrationTest*'
+./gradlew :core:data:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=MigrationTest
 adb shell run-as <pkg> cat databases/<db>-wal 2>/dev/null | head -c 0   # store exists
 ```
 

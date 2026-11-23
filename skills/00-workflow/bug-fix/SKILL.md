@@ -99,7 +99,7 @@ you formed**. A patch that "seems to help" is a regression you have not noticed 
 
 ```bash
 ./gradlew :app:assembleDebug
-./gradlew test --tests '*<AffectedClass>*'
+./gradlew :app:testDebugUnitTest --tests '*<AffectedClass>*'
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 

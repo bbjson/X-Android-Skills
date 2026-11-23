@@ -105,6 +105,8 @@ The grill is complete when this sentence can be filled without inventing anythin
 
 If a clause cannot be filled, that slot is the next question.
 
+Expected: the sentence can be filled without inventing anything; an unfillable clause is the next question.
+
 ## References
 
 - Story-splitting heuristics for oversized requests: `mobile-agent-skillpack/story-splitting`

@@ -40,8 +40,13 @@ Three separate version axes are usually conflated: **JDK** (runs the compiler), 
 ## Rules
 
 1. **Declare a JDK toolchain, not a `jvmTarget` string, for the compiler.** `kotlin { jvmToolchain(17) }`
-   makes Gradle provision and use JDK 17 regardless of `JAVA_HOME`. Setting only
+   makes Gradle *select* a JDK 17 for compilation regardless of `JAVA_HOME`. It does **not**
+   download one: without a toolchain resolver plugin (or an installed JDK 17) the build fails with
+   `Cannot find a Java installation ... matching: {languageVersion=17}`. Setting only
    `compilerOptions.jvmTarget` produces code for a target the compiler cannot guarantee exists.
+   A **JRE-only installation is not a toolchain**: Ubuntu's `openjdk-21-jre` has no `javac`, and
+   Gradle reports `Toolchain installation '...' does not provide the required capabilities:
+   [JAVA_COMPILER]`. Check `ls /usr/lib/jvm/*/bin/javac` before blaming the build script.
 2. **`jvmTarget` and the Java toolchain's `sourceCompatibility` must agree.** A Kotlin/Java mismatch
    shows up as `Cannot inline bytecode built with JVM target` at compile time in one module only.
 3. **One declaration point.** The `kotlin { }` block belongs in the base convention plugin
@@ -68,6 +73,12 @@ Three separate version axes are usually conflated: **JDK** (runs the compiler), 
    (or a matching JDK); a different `JAVA_HOME` on CI is a build that only fails there.
 10. **Verify with the class file version, not by trust.** `javap -verbose` on one compiled class shows
     the major version; a mismatch between modules is visible in the build output, not at runtime.
+11. **On AGP 9+, a pure-Kotlin module must declare the Kotlin JVM plugin without a version.** AGP
+    puts Kotlin on the build classpath, so `alias(libs.plugins.kotlin.jvm)` in a `java-library`
+    module fails with `The request for this plugin could not be satisfied because the plugin is
+    already on the classpath with an unknown version`. Declare the version once in the root
+    (`alias(libs.plugins.kotlin.jvm) apply false`) and apply it as `id("org.jetbrains.kotlin.jvm")`
+    in the module.
 
 ## Procedure
 

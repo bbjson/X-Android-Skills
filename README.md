@@ -125,6 +125,7 @@ python3 tools/audit_duplicates.py          # 规则重叠最高的 skill 对（�
 69 skills — 0 errors, 0 warnings
 69 installed, 0 roadmap — 0 unknown references
 75 routing cases, 68/69 skills covered — 0 failures
+## Verify 已实跑：197 条命令 / 8 条缺陷已修（docs/verify-report.md）
 ```
 
 `router` 是 meta，不需要 eval 用例；其余 68 个 skill 每个至少被一条 routing 断言覆盖。
@@ -139,10 +140,12 @@ tools/validate.py                     # 结构 + 版本规则校验
 tools/check_refs.py                   # 悬空 skill 引用检测
 tools/check_routing.py                # routing 断言（行为测试）
 tools/audit_duplicates.py             # 规则级重叠报告（供人工复核）
+tools/verify_skills.py                # 逐条执行 ## Verify（需真实项目 + 设备）
 tools/install.sh                      # 安装器
 docs/skill-style.md                   # 写作标准（权威）
 docs/provenance.md                    # 33 个来源的取舍账本
 docs/roadmap.txt                      # 规划中的 skill 名（当前为空 = 全部已实现）
+docs/verify-report.md                 # Verify 实跑记录：环境、证据、8 条缺陷、未验证清单
 evals/routing.tsv                     # 75 条 任务→skill 断言
 AGENTS.md                             # 给 agent 的项目约定
 ```
@@ -156,6 +159,32 @@ AGENTS.md                             # 给 agent 的项目约定
 | 1000 行教程 | ≤200 行约束 + 可打勾清单 |
 | 每个仓库各自一套术语 | 统一骨架：Use when / Rules / Checklist / Anti-patterns / Verify |
 | 覆盖率优先 | 冲突消解优先，重复的合并 |
+
+## 验证状态
+
+**已对 69 个 skill 的 `## Verify` 逐条实跑**（2026-11-23，真实项目 + 真机/模拟器）：
+
+| 项 | 结果 |
+|---|---|
+| 提取命令 | 197 条（61 个 skill 含可执行命令） |
+| 去重后实际执行 | Gradle 40 条 · 设备 26 条 · shell 41 条 |
+| 发现 skill 缺陷 | **8 条**（已全部修复） |
+| 无法验证 | 见 `docs/verify-report.md` 的清单（Roborazzi / Macrobenchmark / Hilt·Koin / Room·KSP / KMP / Play Console / 内核） |
+
+环境：AGP 9.1.1 · Gradle 9.7 · Kotlin 2.4.21（AGP 内置）· Compose BOM 2026.02.00 · compileSdk 36 ·
+JDK 17 · Pixel_9_API_36 模拟器。
+
+修掉的 8 条里有 6 条是命令本身错的（`--tests` 用在聚合 task、Gradle 9 的 `project ':x'` 引号、
+失效的 `androidx.compose.compiler.reports`、非法的 `-Pandroid.injected.build.api=...`、
+不存在的 `cmd notification get_notification_channels`），2 条是规则失真（AGP 9 移除
+`kotlin-android` 插件；`jvmToolchain` 不会自动下载 JDK，且 JRE 会报 `[JAVA_COMPILER]`）。
+
+复跑：
+
+```bash
+python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture --dry   # 打印执行计划
+python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture         # 实跑
+```
 
 ## 成本与取舍
 

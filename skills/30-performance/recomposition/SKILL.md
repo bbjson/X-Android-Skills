@@ -75,10 +75,16 @@ has exactly one correct remedy. Diagnose the cause before touching code.
 
 1. Record baseline: Layout Inspector recomposition counts, or a Perfetto trace with
    `@TraceRecomposition` annotations for the suspect composable.
-2. Read the compiler's stability output:
+2. Read the compiler's stability output. Since the Compose compiler moved to a Gradle plugin
+   (Kotlin 2.0+), the `-Pandroidx.compose.compiler.reports` property no longer produces
+   anything — configure the destination in the module instead:
+   ```kotlin
+   // app/build.gradle.kts
+   composeCompiler { reportsDestination = layout.buildDirectory.dir("compose_compiler") }
+   ```
    ```bash
-   ./gradlew :app:compileDebugKotlin -Pandroidx.compose.compiler.reports=true
-   # write to build/compose_compiler/*-composables.txt and *-classes.txt
+   ./gradlew :app:compileDebugKotlin --rerun-tasks
+   ls app/build/compose_compiler     # <module>-composables.csv, <module>-classes.txt
    ```
 3. For each composable with a high count, assign cause (a)-(d) from the report + code:
    - appears `restartable skippable` but still recomposes → (a) or (b)
@@ -113,8 +119,9 @@ has exactly one correct remedy. Diagnose the cause before touching code.
 ## Verify
 
 ```bash
-./gradlew :app:compileDebugKotlin -Pandroidx.compose.compiler.reports=true
-grep -A3 "restartable" app/build/compose_compiler/*-composables.txt | head -40
+./gradlew :app:compileDebugKotlin --rerun-tasks
+ls app/build/compose_compiler                       # <module>-composables.csv, <module>-classes.txt
+grep -A3 "restartable" app/build/compose_compiler/*-composables.csv | head -40
 ```
 
 Expected: the composables you changed now appear as `restartable skippable`, or the measured

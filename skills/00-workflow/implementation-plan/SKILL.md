@@ -102,6 +102,8 @@ The plan is executable when you can answer, for the **next** task only:
 
 If any answer requires opening a file, the task is not planned yet.
 
+Expected: for the next task only, the command, the observable change, and the revert are all answerable without opening a file.
+
 ## References
 
 - `feature-to-spec` — the input to this plan

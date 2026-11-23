@@ -116,6 +116,8 @@ The audit is complete when, for each category, there is at least one line of evi
 output, or steps and screen) and a verdict of `pass` / `fail` / `not applicable`. Re-running the
 documented commands on the same build reproduces the same verdicts.
 
+Expected: every category has at least one line of evidence and a verdict (`pass` / `fail` / `not applicable`), reproduced by rerunning the documented commands.
+
 ## References
 
 - MASVS control catalogue (taxonomy; the control set changes — read the current version)

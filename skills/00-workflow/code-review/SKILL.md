@@ -109,6 +109,8 @@ The review is done when:
 2. Every finding would still make sense to a reviewer who only sees that line + the code.
 3. Reverting one line of the change makes at least one test fail (or that gap is a finding).
 
+Expected: the one-line intent is written down, every finding is actionable at a line, and at least one test is proven to fail without the change (or that gap is itself a finding).
+
 ## References
 
 - `layering`, `state-holders`, `data-layer`, `unit-testing`, `keystore-and-crypto` — rubrics

@@ -44,6 +44,8 @@ python3 tools/validate.py
 python3 tools/check_refs.py
 python3 tools/check_routing.py
 ./tools/install.sh --list | tail -3
+# when a tool version changed, re-run the Verify pass (needs a real project + device):
+# python3 tools/verify_skills.py --fixture ~/Desktop/verify-fixture
 ```
 
 All must be clean. A skill that only "reads well" is not done. A skill whose `## Verify`

@@ -102,7 +102,7 @@ nobody else; the platform will not fix a wrong channel.
 
 ```bash
 adb shell dumpsys notification --noredact | grep -A6 "<pkg>"
-adb shell cmd notification get_notification_channels    # channel ids + importance
+adb shell dumpsys notification --noredact | grep -A6 "<pkg>"   # channel ids + importance
 adb shell pm revoke <pkg> android.permission.POST_NOTIFICATIONS   # denial path
 adb shell am force-stop <pkg>   # then send a test push
 ```

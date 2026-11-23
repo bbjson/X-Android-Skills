@@ -107,9 +107,12 @@ tools/check_routing.py       # behavioural test: task -> expected skill
 A skill is merge-ready when all four pass **and** every `## Verify` command was run once
 on a real project.
 
-That last condition is the one this repository cannot satisfy on its own: the commands are
-written from the platform documentation and from the upstream skills, not from a verified
-run against a real Android project. Treat `## Verify` as a hypothesis until you have run it;
-a command that fails on first contact is a skill bug, not a project problem. Known-risk
-areas are the ones whose tools are versioned or environment-dependent: `agp9-migration`,
-`build-performance`, `baseline-profiles`, `kernel-lkm`, `mainline-port`.
+A Verify pass was executed on 2026-11-23 against a real project on a real emulator; it found
+8 skill defects (wrong task names, a dead Compose compiler property, a bogus `-P` property, a
+non-existent adb subcommand, outdated Gradle output matching, and two inaccurate rules). All are
+fixed. See `docs/verify-report.md` for the environment, the evidence, and the explicit list of
+what could **not** be verified (Roborazzi, Macrobenchmark, Hilt/Koin, Room/KSP, KMP, Play Console,
+kernel).
+
+The rule this establishes: **a command that fails on first contact is a skill bug, not a project
+problem.** Re-run `tools/verify_skills.py` whenever a tool version changes.

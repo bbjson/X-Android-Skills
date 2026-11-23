@@ -110,6 +110,8 @@ A finding is reportable when: the command that produced it is in the document, t
 (if claimed as exploitable) a runtime observation confirms it. Re-running the documented commands on the
 same APK reproduces the same output.
 
+Expected: each finding carries its command, its output, and a static-vs-dynamic label; rerunning the commands reproduces the same output.
+
 ## References
 
 - `apktool`, `jadx`, `aapt2`, `frida`, `objection`, `mitmproxy` — tool docs
